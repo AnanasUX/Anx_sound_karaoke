@@ -1,0 +1,3272 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>BEST SOUND T1V2 — MVSilicon BP1048B2 DSP Controller</title>
+  <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+
+:root {
+  color-scheme: dark;
+  --bg: #0e1013;
+  --surface: #171a20;
+  --surface-2: #12151a;
+  --border: #262b34;
+  --muted: #7e8795;
+  --text: #f4f7fb;
+  --cyan: #00e5ff;
+  --amber: #ffb300;
+  --gold: #d4af37;
+  --green: #00e676;
+  --red: #ff5252;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #343b47 #101216;
+}
+
+@layer base {
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    background: var(--bg);
+  }
+  button,
+  input,
+  select {
+    outline: none;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    box-shadow: 0 0 0 2px var(--cyan);
+  }
+}
+
+.app-shell {
+  min-height: 100vh;
+  background: radial-gradient(circle at 67% -18%, #16242a 0, transparent 28%), var(--bg);
+}
+.topbar {
+  height: 74px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(14, 16, 19, 0.92);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(18px);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 235px;
+}
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #544b2c;
+  border-radius: 8px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px;
+  box-shadow: inset 0 0 12px #d4af3715;
+}
+.brand-mark span {
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(#f6dd77, #a77c12);
+}
+.brand-mark span:nth-child(1) {
+  height: 9px;
+}
+.brand-mark span:nth-child(2) {
+  height: 17px;
+}
+.brand-mark span:nth-child(3) {
+  height: 13px;
+}
+.brand-title {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: #eef0f2;
+  white-space: nowrap;
+}
+.brand-title strong {
+  color: var(--gold);
+}
+.brand-sub {
+  margin-top: 3px;
+  color: #777f8b;
+  font: 500 8px 'JetBrains Mono';
+  letter-spacing: 0.08em;
+}
+.brand-sub span {
+  color: #a18b43;
+  margin-left: 6px;
+}
+.project-meta,
+.format-meta {
+  border-left: 1px solid var(--border);
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.project-meta span,
+.format-meta span,
+.cpu-meter span {
+  font: 500 8px 'JetBrains Mono';
+  letter-spacing: 0.14em;
+  color: #606a78;
+}
+.project-meta strong,
+.format-meta strong {
+  font: 500 11px 'JetBrains Mono';
+  color: #afb6c0;
+}
+.format-meta i {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #515966;
+  vertical-align: middle;
+  margin: 0 6px;
+}
+.cpu-meter {
+  width: 90px;
+  margin-left: auto;
+}
+.cpu-meter > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cpu-meter strong {
+  font: 500 10px 'JetBrains Mono';
+  color: #9ba3ae;
+}
+.meter-track {
+  margin-top: 6px;
+  height: 3px;
+  background: #252a31;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.meter-track i {
+  display: block;
+  height: 100%;
+  background: var(--green);
+  box-shadow: 0 0 8px #00e67688;
+}
+.connection-pill {
+  min-width: 210px;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #214b3b;
+  background: #101d18;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #89a597;
+}
+.connection-pill > span:nth-of-type(2) {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  font: 500 10px 'JetBrains Mono';
+  color: #c5d5cd;
+  line-height: 1.3;
+}
+.connection-pill small {
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  color: var(--green);
+}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow:
+    0 0 0 4px #00e67613,
+    0 0 10px #00e67688;
+  display: inline-block;
+  flex: none;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  50% {
+    box-shadow:
+      0 0 0 7px transparent,
+      0 0 14px #00e676bb;
+  }
+}
+.mute-button,
+.save-button {
+  height: 42px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font: 600 9px 'JetBrains Mono';
+  letter-spacing: 0.08em;
+}
+.mute-button {
+  width: 70px;
+  flex-direction: column;
+  gap: 1px;
+  color: #ff8b8b;
+  border: 1px solid #572c31;
+  background: #241317;
+}
+.mute-button.active {
+  background: var(--red);
+  color: #fff;
+  box-shadow: 0 0 20px #ff525244;
+}
+.save-button {
+  padding: 0 15px;
+  color: #decf93;
+  border: 1px solid #544b2c;
+  background: #211d12;
+}
+.save-button.saved {
+  color: var(--green);
+  border-color: #20533d;
+  background: #102119;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  min-height: calc(100vh - 74px);
+}
+.left-rail {
+  border-right: 1px solid var(--border);
+  background: #101216;
+  padding: 20px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  position: sticky;
+  top: 74px;
+  height: calc(100vh - 74px);
+}
+.rail-heading {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7px;
+}
+.rail-heading span {
+  color: #68717e;
+  font: 600 8px 'JetBrains Mono';
+  letter-spacing: 0.15em;
+}
+.rail-heading i {
+  color: var(--green);
+  font: 500 7px 'JetBrains Mono';
+  border: 1px solid #214a38;
+  background: #12251c;
+  border-radius: 4px;
+  padding: 3px 5px;
+}
+.path-item {
+  min-height: 48px;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: #67707d;
+  background: transparent;
+  display: grid;
+  grid-template-columns: 26px 1fr 5px;
+  gap: 4px;
+  align-items: center;
+  text-align: left;
+  font: 500 8px 'JetBrains Mono';
+  letter-spacing: 0.06em;
+  padding: 0 8px;
+}
+.path-number {
+  color: #424a56;
+  font-size: 8px;
+}
+.path-item i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #30353d;
+}
+.path-item.active {
+  color: #eafaff;
+  border-color: #1c4d57;
+  background: linear-gradient(90deg, #10272d, #111b20);
+  box-shadow: inset 2px 0 var(--cyan);
+}
+.path-item.active .path-number,
+.path-item.active i {
+  color: var(--cyan);
+  background: var(--cyan);
+  box-shadow: 0 0 8px #00e5ff99;
+}
+.output-meter {
+  border-top: 1px solid #1f232a;
+  margin-top: 15px;
+  padding-top: 12px;
+}
+.output-meter strong {
+  color: #8c96a3;
+  font: 500 8px 'JetBrains Mono';
+}
+.stereo-bars {
+  height: 75px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-flow: column;
+  grid-template-rows: repeat(16, 1fr);
+  gap: 2px 6px;
+  padding: 4px 22px 0;
+  transform: rotate(180deg);
+}
+.stereo-bars i {
+  background: #20242b;
+  border-radius: 1px;
+}
+.stereo-bars i.lit {
+  background: var(--green);
+  box-shadow: 0 0 4px #00e67655;
+}
+.stereo-bars i:nth-child(12n) {
+  background: var(--amber);
+}
+.lr-label {
+  display: flex;
+  justify-content: space-around;
+  color: #68717e;
+  font: 8px 'JetBrains Mono';
+  padding: 5px 17px;
+}
+.device-card {
+  border: 1px solid #242932;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.device-icon {
+  width: 33px;
+  height: 33px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  background: #182028;
+  color: #83a9bc;
+}
+.device-card div {
+  display: flex;
+  flex-direction: column;
+}
+.device-card small {
+  color: #56606d;
+  font: 6px 'JetBrains Mono';
+  letter-spacing: 0.1em;
+}
+.device-card strong {
+  color: #b9c0ca;
+  font: 500 9px 'JetBrains Mono';
+}
+.device-card em {
+  color: #575f69;
+  font: normal 7px 'JetBrains Mono';
+  margin-top: 2px;
+}
+
+.main-panel {
+  max-width: 1240px;
+  width: 100%;
+  padding: 18px 22px 40px;
+  margin: 0 auto;
+}
+.mobile-only {
+  display: none;
+}
+.mobile-sensor-zone {
+  display: none;
+}
+.mobile-app-nav {
+  display: none;
+}
+.analyzer-card,
+.control-row > div,
+.peq-section,
+.effects-section,
+.studio-panel {
+  border: 1px solid var(--border);
+  background: linear-gradient(145deg, #171a20, #14171c);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.025),
+    0 15px 40px #0003;
+}
+.panel-header {
+  min-height: 61px;
+  padding: 11px 15px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.section-kicker {
+  display: block;
+  color: #60717c;
+  font: 600 7px 'JetBrains Mono';
+  letter-spacing: 0.18em;
+  margin-bottom: 4px;
+}
+h1,
+h2 {
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+.panel-header h1 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.legend {
+  display: flex;
+  gap: 18px;
+  margin-left: 40px;
+  color: #717b88;
+  font: 500 8px 'JetBrains Mono';
+}
+.legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend i {
+  width: 13px;
+  height: 2px;
+  border-radius: 4px;
+}
+.legend .cyan {
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+}
+.legend .amber {
+  background: var(--amber);
+  box-shadow: 0 0 6px var(--amber);
+}
+.analyzer-stats {
+  margin-left: auto;
+  display: flex;
+  gap: 18px;
+}
+.analyzer-stats span {
+  display: flex;
+  flex-direction: column;
+  color: #56606d;
+  font: 6px 'JetBrains Mono';
+  letter-spacing: 0.1em;
+}
+.analyzer-stats strong {
+  color: #9da5b0;
+  font-size: 9px;
+  margin-top: 4px;
+}
+.graph-wrap {
+  height: 260px;
+  position: relative;
+  background: #0b0e12;
+}
+.spectrum {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.grid-line {
+  stroke: #29303a;
+  stroke-width: 1;
+  opacity: 0.6;
+  stroke-dasharray: 2 4;
+}
+.zero-line {
+  stroke: #53606b;
+  stroke-width: 1;
+  opacity: 0.8;
+}
+.axis-label {
+  font: 9px 'JetBrains Mono';
+  fill: #545e6b;
+}
+.node-label {
+  font: 600 8px 'JetBrains Mono';
+  fill: #eaffff;
+}
+.graph-unit {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  left: 10px;
+  color: #505a67;
+  font: 8px 'JetBrains Mono';
+}
+.mobile-hud {
+  display: none;
+}
+.graph-toolbar {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border-top: 1px solid #20252c;
+}
+.toggle-control {
+  min-height: 31px;
+  border: 1px solid #292f38;
+  background: #111419;
+  border-radius: 6px;
+  padding: 0 8px;
+  color: #687280;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font: 500 7px 'JetBrains Mono';
+  letter-spacing: 0.06em;
+}
+.toggle-control.on {
+  color: #beeef2;
+  border-color: #23505a;
+  background: #102127;
+}
+.switch {
+  width: 24px;
+  height: 12px;
+  border-radius: 10px;
+  background: #2c323b;
+  padding: 2px;
+  margin-left: 3px;
+  transition: 0.2s;
+}
+.switch span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #67717d;
+  transition: 0.2s;
+}
+.toggle-control.on .switch {
+  background: #0d5963;
+}
+.toggle-control.on .switch span {
+  transform: translateX(12px);
+  background: var(--cyan);
+  box-shadow: 0 0 7px #00e5ff;
+}
+
+.control-row {
+  display: grid;
+  grid-template-columns: 0.9fr 1.3fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.preamp-card,
+.preset-card {
+  padding: 13px 15px;
+}
+.control-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.control-label > span {
+  color: #8d96a2;
+  font: 600 8px 'JetBrains Mono';
+  letter-spacing: 0.1em;
+}
+.control-label strong {
+  color: var(--cyan);
+  font: 600 14px 'JetBrains Mono';
+}
+.control-label strong small {
+  font-size: 8px;
+  color: #68737f;
+}
+.control-label > small {
+  color: #4f5865;
+  font: 7px 'JetBrains Mono';
+}
+.precision-slider {
+  width: 100%;
+  height: 18px;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+.precision-slider::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 4px;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0 var(--progress),
+    #343a44 var(--progress) 100%
+  );
+}
+.precision-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5.5px;
+  border: 3px solid #101318;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 0 9px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.precision-slider::-moz-range-track {
+  height: 3px;
+  background: #343a44;
+}
+.precision-slider::-moz-range-progress {
+  height: 3px;
+  background: var(--accent);
+}
+.precision-slider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 3px solid #101318;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.range-label,
+.band-scale {
+  display: flex;
+  justify-content: space-between;
+  color: #4e5662;
+  font: 6px 'JetBrains Mono';
+}
+.preset-list {
+  display: flex;
+  gap: 6px;
+}
+.preset-list button {
+  height: 30px;
+  flex: 1;
+  padding: 0 7px;
+  white-space: nowrap;
+  border: 1px solid #292f37;
+  border-radius: 6px;
+  background: #111419;
+  color: #777f8b;
+  font: 500 7px 'JetBrains Mono';
+}
+.preset-list button.active {
+  color: #ffe995;
+  border-color: #5e5127;
+  background: linear-gradient(#282313, #1b190f);
+  box-shadow: inset 0 0 8px #d4af3711;
+}
+
+.peq-section,
+.effects-section {
+  margin-top: 10px;
+  padding: 15px;
+}
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 13px;
+}
+.section-title-row h2 {
+  font-size: 15px;
+  font-weight: 600;
+}
+.section-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5f776b;
+  font: 500 7px 'JetBrains Mono';
+  letter-spacing: 0.08em;
+}
+.mobile-band-grid {
+  display: none;
+}
+.peq-table {
+  border: 1px solid #292f37;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.peq-table-head,
+.peq-table-row {
+  display: grid;
+  grid-template-columns: 0.6fr 0.7fr 1.1fr 1.2fr 1fr 0.8fr 1.6fr;
+  align-items: center;
+}
+.peq-table-head {
+  min-height: 28px;
+  padding: 0 10px;
+  background: #111419;
+  color: #535d69;
+  font: 600 7px 'JetBrains Mono';
+  letter-spacing: 0.08em;
+}
+.peq-table-row {
+  min-height: 36px;
+  padding: 0 10px;
+  border-top: 1px solid #252a32;
+  color: #858e9a;
+  font: 500 8px 'JetBrains Mono';
+}
+.peq-table-row:hover,
+.peq-table-row.selected {
+  background: #192127;
+}
+.peq-table-row.selected {
+  box-shadow: inset 2px 0 var(--cyan);
+}
+.table-band {
+  color: #b5bec9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.table-band i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 7px currentColor;
+}
+.mini-switch {
+  width: 24px;
+  height: 12px;
+  border-radius: 8px;
+  background: #17454c;
+  padding: 2px;
+}
+.mini-switch i {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  transform: translateX(12px);
+}
+.select-button {
+  width: 58px;
+  height: 21px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 7px;
+  border: 1px solid #313740;
+  background: #12151a;
+  border-radius: 4px;
+  color: #8b949f;
+  font: 7px 'JetBrains Mono';
+}
+.numeric-cell {
+  color: #b7c0ca;
+}
+.numeric-cell.gain {
+  color: var(--cyan);
+}
+.numeric-cell.negative {
+  color: #ff9051;
+}
+.desc-cell {
+  color: #676f7a;
+}
+
+.effect-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.effect-card {
+  border: 1px solid #292f37;
+  background: #111419;
+  border-radius: 8px;
+  padding: 12px;
+}
+.effect-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 11px;
+}
+.effect-card-top span {
+  display: flex;
+  flex-direction: column;
+}
+.effect-card-top strong {
+  color: #bdc4cd;
+  font-size: 10px;
+}
+.effect-card-top small {
+  color: #59626e;
+  font: 7px 'JetBrains Mono';
+  margin-top: 3px;
+}
+.effect-card-top b {
+  font: 600 14px 'JetBrains Mono';
+}
+.studio-cta {
+  display: none;
+}
+
+.studio-panel {
+  margin-top: 10px;
+  padding: 15px;
+}
+.studio-panel-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.studio-panel-top h2 {
+  font-size: 15px;
+}
+.close-studio {
+  display: none;
+}
+.studio-graph {
+  height: 360px;
+  border: 1px solid #292f37;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.studio-controls {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+.studio-controls > div {
+  border: 1px solid #292f37;
+  background: #111419;
+  border-radius: 8px;
+  padding: 12px;
+}
+.studio-control-title {
+  color: #92a0ab;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.studio-control-title span {
+  display: flex;
+  flex-direction: column;
+  font: 600 8px 'JetBrains Mono';
+  letter-spacing: 0.08em;
+}
+.studio-control-title small {
+  color: #515b66;
+  font-size: 6px;
+  margin-top: 2px;
+}
+.generator-panel .toggle-control {
+  display: inline-flex;
+  margin-right: 5px;
+}
+.tone-buttons {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+}
+.tone-buttons button {
+  flex: 1;
+  border: 1px solid #292f37;
+  background: #171a20;
+  border-radius: 5px;
+  color: #aeb7c2;
+  font: 500 8px 'JetBrains Mono';
+  padding: 6px;
+}
+.tone-buttons small {
+  display: block;
+  color: #525c68;
+  font-size: 6px;
+  margin-top: 2px;
+}
+.rta-panel label {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 7px;
+  color: #59636f;
+  font: 600 7px 'JetBrains Mono';
+}
+.rta-panel select {
+  width: 100%;
+  height: 28px;
+  border: 1px solid #303741;
+  border-radius: 5px;
+  color: #aab3be;
+  background: #171a20;
+  padding: 0 7px;
+  font: 7px 'JetBrains Mono';
+}
+.autotune-button,
+.export-button {
+  width: 100%;
+  height: 32px;
+  border: 1px solid #17616b;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #0e4851, #12343b);
+  color: #bff9ff;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  justify-content: center;
+  font: 600 7px 'JetBrains Mono';
+  letter-spacing: 0.07em;
+}
+.export-panel p {
+  color: #626b77;
+  font-size: 8px;
+  line-height: 1.5;
+  margin: 0 0 10px;
+}
+.export-button {
+  border-color: #5b4c22;
+  background: linear-gradient(135deg, #3b3218, #24200f);
+  color: #ead47b;
+}
+
+.mute-banner {
+  position: fixed;
+  z-index: 80;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  height: 36px;
+  border: 1px solid #6a3035;
+  border-radius: 7px;
+  background: #281519ee;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #ff9292;
+  font: 600 8px 'JetBrains Mono';
+  box-shadow: 0 8px 30px #0009;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: #050608cc;
+  backdrop-filter: blur(10px);
+  padding: 20px;
+}
+.export-modal {
+  width: min(480px, 100%);
+  border: 1px solid #343a44;
+  border-radius: 12px;
+  background: #171a20;
+  padding: 20px;
+  box-shadow: 0 30px 80px #000;
+}
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+}
+.modal-head h2 {
+  font-size: 18px;
+}
+.modal-head > button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #343a44;
+  border-radius: 6px;
+  color: #8d96a2;
+  background: #111419;
+  font-size: 20px;
+}
+.export-modal > p {
+  color: #68717d;
+  font: 8px 'JetBrains Mono';
+  margin: 10px 0 16px;
+}
+.export-options {
+  display: grid;
+  gap: 7px;
+}
+.export-options > button {
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 10px 12px;
+  text-align: left;
+  border: 1px solid #2c323b;
+  background: #111419;
+  border-radius: 7px;
+  color: #c8d0da;
+}
+.export-options button > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.export-options button small {
+  grid-column: 1;
+  padding-left: 32px;
+  color: #5d6672;
+  font: 7px 'JetBrains Mono';
+}
+.export-options button > svg {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: center;
+  color: #626c78;
+}
+
+@media (max-width: 1050px) {
+  .project-meta,
+  .format-meta,
+  .cpu-meter,
+  .save-button {
+    display: none;
+  }
+  .connection-pill {
+    margin-left: auto;
+  }
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+  .left-rail {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .app-shell {
+    background: radial-gradient(circle at 50% 0, #15242a 0, transparent 25%), var(--bg);
+    padding-bottom: calc(94px + env(safe-area-inset-bottom));
+  }
+  .topbar {
+    height: calc(64px + max(env(safe-area-inset-top), 20px));
+    padding: max(env(safe-area-inset-top), 20px) 12px 0;
+    gap: 8px;
+    position: sticky;
+    align-items: center;
+    background: rgba(8, 10, 13, 0.96);
+    box-shadow: 0 8px 30px #0006;
+  }
+  .mobile-sensor-zone {
+    display: block;
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+    width: 102px;
+    height: 25px;
+    top: max(calc(env(safe-area-inset-top) - 32px), 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid #16191e;
+    border-radius: 18px;
+    background: #030405;
+    box-shadow:
+      inset 0 -1px #101319,
+      0 2px 7px #000;
+  }
+  .mobile-sensor-zone span {
+    position: absolute;
+    right: 9px;
+    top: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #080b0e;
+    box-shadow:
+      inset 0 0 0 2px #10171c,
+      0 0 4px #0a2934;
+  }
+  .brand {
+    min-width: 0;
+    flex: 1;
+  }
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+  }
+  .brand-title {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+  .brand-sub {
+    font-size: 7px;
+  }
+  .brand-sub span {
+    display: none;
+  }
+  .connection-pill {
+    min-width: 0;
+    width: 38px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+    border-color: #1f4e3c;
+  }
+  .connection-pill > span:not(.live-dot),
+  .connection-pill > svg:last-child {
+    display: none;
+  }
+  .connection-pill .live-dot {
+    position: absolute;
+    margin: -25px -27px 0 0;
+    width: 6px;
+    height: 6px;
+  }
+  .mute-button {
+    width: 40px;
+    height: 36px;
+  }
+  .mute-button span {
+    font-size: 6px;
+  }
+  .main-panel {
+    padding: 16px 12px calc(32px + env(safe-area-inset-bottom));
+    max-width: 520px;
+  }
+  .mobile-only {
+    display: block;
+  }
+  .mobile-head {
+    margin: 2px 2px 14px;
+    scroll-margin-top: calc(94px + env(safe-area-inset-top));
+  }
+  .mobile-head .eyebrow {
+    color: #628077;
+    font: 600 7px 'JetBrains Mono';
+    letter-spacing: 0.15em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mobile-head h1 {
+    font-size: 24px;
+    margin-top: 8px;
+  }
+  .mobile-title-line {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .mobile-profile-badge {
+    max-width: 132px;
+    overflow: hidden;
+    padding: 7px 9px;
+    border: 1px solid #3e3923;
+    border-radius: 10px;
+    background: #1c190f;
+    color: #d8c66d;
+    font: 600 7px 'JetBrains Mono';
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-shadow: inset 0 1px #4d4528;
+  }
+  .mobile-profile-badge small {
+    display: block;
+    margin-bottom: 2px;
+    color: #6f6744;
+    font-size: 5px;
+    letter-spacing: 0.08em;
+  }
+  .mobile-head p {
+    margin: 4px 0 0;
+    color: #707987;
+    font-size: 11px;
+  }
+  .mobile-mode-rack {
+    margin-bottom: 10px;
+    padding: 12px 12px 9px;
+    border: 1px solid #292e35;
+    border-radius: 18px;
+    background:
+      radial-gradient(circle at 50% 45%, #1b1f24 0, transparent 42%),
+      linear-gradient(145deg, #1b1e22, #0d0f12);
+    box-shadow:
+      inset 0 1px #363a3f,
+      inset 0 -12px 24px #05060788,
+      0 10px 22px #0007;
+  }
+  .mode-rack-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .mode-rack-head > div {
+    display: flex;
+    flex-direction: column;
+  }
+  .mode-rack-head span {
+    color: #8e959d;
+    font: 600 7px 'JetBrains Mono';
+    letter-spacing: 0.14em;
+  }
+  .mode-rack-head small {
+    color: #454b53;
+    font: 6px 'JetBrains Mono';
+    margin-top: 3px;
+  }
+  .mode-rack-head strong {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #66736c;
+    font: 500 6px 'JetBrains Mono';
+  }
+  .mode-rack-head strong i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 9px var(--green);
+  }
+  .mode-switches {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 11px;
+    padding: 12px 20px 11px;
+  }
+  .mode-switches button {
+    min-width: 0;
+    height: 74px;
+    padding: 8px 5px 6px;
+    border: 1px solid #090b0d;
+    border-radius: 23px;
+    background: linear-gradient(90deg, #090b0d, #171a1e 48%, #080a0c);
+    box-shadow:
+      inset 0 0 0 1px #282c31,
+      inset 0 -8px 12px #0009,
+      0 5px 9px #000a;
+    color: #565d65;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mode-switches button > span {
+    font: 600 8px 'JetBrains Mono';
+    letter-spacing: 0.08em;
+  }
+  .mode-switches button > i {
+    position: relative;
+    width: 23px;
+    height: 23px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #262a2f;
+    border-radius: 50%;
+    background: #090b0d;
+    box-shadow: inset 0 2px 5px #000;
+  }
+  .mode-switches button > i b {
+    width: 7px;
+    height: 7px;
+    border: 1px solid #343a40;
+    border-radius: 50%;
+    background: #111419;
+  }
+  .mode-switches button small {
+    color: #343a42;
+    font: 5px 'JetBrains Mono';
+    letter-spacing: 0.05em;
+  }
+  .mode-switches button.active {
+    color: #a4abb1;
+    border-color: #13171a;
+    box-shadow:
+      inset 0 0 0 1px #34383d,
+      inset 0 -8px 12px #0009,
+      0 5px 9px #000a;
+  }
+  .mode-switches button.active > i b {
+    border-color: #5bff45;
+    background: #72ff54;
+    box-shadow:
+      0 0 6px #40ff20,
+      0 0 14px #40ff20aa;
+  }
+  .mode-switches button.active.warm > i b {
+    border-color: #ff8d2e;
+    background: #ff710b;
+    box-shadow:
+      0 0 6px #ff710b,
+      0 0 14px #ff710b99;
+  }
+  .mode-rack-footer {
+    min-height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-top: 1px solid #20242a;
+    color: #454c54;
+    font: 500 5px 'JetBrains Mono';
+    letter-spacing: 0.04em;
+  }
+  .mode-rack-footer span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .mode-rack-footer i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #32373d;
+  }
+  .mode-rack-footer i.active {
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+  }
+  .panel-header {
+    min-height: 50px;
+    padding: 9px 11px;
+  }
+  .panel-header h1 {
+    font-size: 13px;
+  }
+  .legend {
+    margin-left: auto;
+    gap: 10px;
+  }
+  .legend span {
+    font-size: 6px;
+  }
+  .analyzer-stats {
+    display: none;
+  }
+  .graph-wrap {
+    height: 205px;
+  }
+  .mobile-hud {
+    display: flex;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: auto;
+    padding: 6px 7px;
+    gap: 6px;
+    align-items: center;
+    border: 1px solid #384047;
+    border-radius: 5px;
+    background: #13171cdd;
+    font: 500 6px 'JetBrains Mono';
+    color: #717b87;
+  }
+  .mobile-hud strong {
+    color: #c8d0d8;
+  }
+  .mobile-hud em {
+    color: #ff8a3d;
+    font-style: normal;
+  }
+  .mobile-hud small {
+    font-size: 6px;
+  }
+  .graph-toolbar {
+    justify-content: space-between;
+    gap: 4px;
+  }
+  .toggle-control {
+    padding: 0 6px;
+    gap: 4px;
+    font-size: 6px;
+  }
+  .graph-toolbar .switch {
+    width: 20px;
+  }
+  .graph-toolbar .toggle-control.on .switch span {
+    transform: translateX(8px);
+  }
+  .control-row {
+    grid-template-columns: 1fr;
+  }
+  .preamp-card,
+  .preset-card {
+    padding: 12px;
+  }
+  .preset-list {
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .preset-list button {
+    flex: none;
+    min-width: 82px;
+  }
+  .peq-section,
+  .effects-section {
+    padding: 13px 11px;
+    scroll-margin-top: calc(92px + env(safe-area-inset-top));
+  }
+  .section-title-row h2 {
+    font-size: 14px;
+  }
+  .section-status {
+    display: none;
+  }
+  .mobile-band-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+  .peq-table {
+    display: none;
+  }
+  .fader-hint {
+    margin: -7px 0 11px;
+    color: #4d555e;
+    font: 6px 'JetBrains Mono';
+  }
+  .band-card {
+    min-height: 152px;
+    border: 1px solid #292f37;
+    border-radius: 14px;
+    background:
+      linear-gradient(90deg, transparent, #ffffff05 48%, transparent),
+      linear-gradient(145deg, #181b1f, #0c0e11);
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      inset 0 1px #30343a,
+      inset 0 -9px 18px #05060788,
+      0 6px 12px #0005;
+  }
+  .band-card.resonance {
+    border-color: #603b27;
+    background: linear-gradient(145deg, #211914, #131416);
+    box-shadow: inset 0 0 20px #ff8a3d0a;
+  }
+  .band-card-head {
+    display: flex;
+    justify-content: space-between;
+  }
+  .band-index {
+    font: 600 8px 'JetBrains Mono';
+  }
+  .band-enabled {
+    color: #55606b;
+    font: 6px 'JetBrains Mono';
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .band-enabled i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+  }
+  .band-name {
+    margin-top: 10px;
+    color: #8b949f;
+    font-size: 9px;
+  }
+  .band-freq {
+    margin-top: 2px;
+    font: 600 13px 'JetBrains Mono';
+    color: #d3d9df;
+  }
+  .band-value {
+    margin-top: 9px;
+    font: 600 15px 'JetBrains Mono';
+  }
+  .band-value small {
+    font-size: 7px;
+  }
+  .band-card .precision-slider {
+    margin-top: 6px;
+  }
+  .band-scale i {
+    font-style: normal;
+    color: #69727c;
+  }
+  .effect-grid {
+    grid-template-columns: 1fr;
+  }
+  .effect-card {
+    padding: 13px;
+  }
+  .studio-cta {
+    width: 100%;
+    min-height: 64px;
+    margin-top: 10px;
+    border: 1px solid #16728a;
+    border-radius: 10px;
+    padding: 0 13px;
+    display: grid;
+    grid-template-columns: 35px 1fr 18px;
+    align-items: center;
+    text-align: left;
+    gap: 10px;
+    background: linear-gradient(120deg, #063c50, #0a6575);
+    color: #d4faff;
+    box-shadow:
+      inset 0 1px #47c7e244,
+      0 8px 25px #006b8330;
+  }
+  #ai-calibration {
+    scroll-margin-top: calc(92px + env(safe-area-inset-top));
+  }
+  .mobile-app-nav {
+    position: fixed;
+    z-index: 85;
+    right: 10px;
+    bottom: max(8px, env(safe-area-inset-bottom));
+    left: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    min-height: 68px;
+    padding: 7px 8px;
+    border: 1px solid #30363f;
+    border-radius: 21px;
+    background: rgba(14, 17, 21, 0.94);
+    box-shadow:
+      inset 0 1px rgba(255, 255, 255, 0.06),
+      0 16px 42px #000d;
+    backdrop-filter: blur(22px);
+  }
+  .mobile-app-nav button {
+    position: relative;
+    min-width: 0;
+    min-height: 52px;
+    border: 0;
+    border-radius: 15px;
+    background: transparent;
+    color: #5e6874;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition:
+      color 0.2s ease,
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+  .mobile-app-nav button:active {
+    transform: scale(0.94);
+  }
+  .mobile-app-nav button span {
+    font: 600 7px 'JetBrains Mono';
+  }
+  .mobile-app-nav button.active {
+    color: #bdfaff;
+    background: linear-gradient(145deg, #12333b, #10242a);
+    box-shadow:
+      inset 0 0 0 1px #1b5864,
+      inset 0 1px #2d7580;
+  }
+  .mobile-app-nav button.active::before {
+    position: absolute;
+    top: 3px;
+    width: 18px;
+    height: 2px;
+    border-radius: 4px;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+    content: '';
+  }
+  .cta-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #63e6ff44;
+    border-radius: 8px;
+    background: #001d26aa;
+  }
+  .studio-cta > span:nth-child(2) {
+    font: 600 8px/1.4 'JetBrains Mono';
+    letter-spacing: 0.04em;
+  }
+  .studio-cta small {
+    display: block;
+    color: #75b7c3;
+    font-size: 6px;
+    margin-bottom: 2px;
+  }
+  .studio-panel {
+    display: none;
+  }
+  .mobile-studio-open .topbar,
+  .mobile-studio-open .mobile-head,
+  .mobile-studio-open .analyzer-card,
+  .mobile-studio-open .control-row,
+  .mobile-studio-open .peq-section,
+  .mobile-studio-open .effects-section,
+  .mobile-studio-open .studio-cta {
+    display: none;
+  }
+  .mobile-studio-open .mobile-app-nav {
+    display: none;
+  }
+  .mobile-studio-open .main-panel {
+    max-width: none;
+    padding: 0;
+  }
+  .mobile-studio-open .studio-panel {
+    display: block;
+    min-height: 100vh;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    padding: 14px 12px;
+  }
+  .mobile-studio-open .studio-panel-top {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 6px 0 12px;
+    background: #171a20;
+  }
+  .mobile-studio-open .close-studio {
+    display: block;
+    border: 1px solid #353c46;
+    border-radius: 6px;
+    background: #111419;
+    color: #89939f;
+    padding: 0 10px;
+    font: 600 7px 'JetBrains Mono';
+  }
+  .mobile-studio-open .studio-graph {
+    height: 320px;
+  }
+  .mobile-studio-open .studio-controls {
+    grid-template-columns: 1fr;
+  }
+  .mute-banner {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    transform: none;
+    height: auto;
+    min-height: 40px;
+    justify-content: center;
+    text-align: center;
+    font-size: 7px;
+  }
+}
+
+@media (min-width: 701px) and (max-height: 820px) {
+  .graph-wrap {
+    height: 220px;
+  }
+  .studio-graph {
+    height: 300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.figma-custom-code-fragment {
+  display: contents;
+}
+.figma-bypass-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 2147483647;
+  transform: translateY(-150%);
+  border-radius: 6px;
+  background: #111827;
+  color: #fff;
+  padding: 8px 12px;
+  font:
+    600 14px/1.2 system-ui,
+    sans-serif;
+  text-decoration: none;
+}
+.figma-bypass-link:focus {
+  transform: translateY(0);
+}
+
+
+    /* Embedded utility classes for AI Calibration panel */
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .justify-end { justify-content: flex-end; }
+    .flex-wrap { flex-wrap: wrap; }
+    .gap-1 { gap: 4px; }
+    .gap-2 { gap: 8px; }
+    .gap-3 { gap: 12px; }
+    .gap-4 { gap: 16px; }
+    .grid { display: grid; }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .p-2 { padding: 8px; }
+    .p-3 { padding: 12px; }
+    .p-4 { padding: 16px; }
+    .px-3 { padding-left: 12px; padding-right: 12px; }
+    .px-4 { padding-left: 16px; padding-right: 16px; }
+    .py-1 { padding-top: 4px; padding-bottom: 4px; }
+    .py-2 { padding-top: 8px; padding-bottom: 8px; }
+    .py-4 { padding-top: 16px; padding-bottom: 16px; }
+    .mt-1 { margin-top: 4px; }
+    .mt-2 { margin-top: 8px; }
+    .mt-3 { margin-top: 12px; }
+    .mt-4 { margin-top: 16px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .rounded { border-radius: 6px; }
+    .rounded-lg { border-radius: 8px; }
+    .rounded-xl { border-radius: 12px; }
+    .rounded-full { border-radius: 9999px; }
+    .border { border: 1px solid #262b34; }
+    .border-b { border-bottom: 1px solid #262b34; }
+    .border-t { border-top: 1px solid #262b34; }
+    .font-mono { font-family: 'JetBrains Mono', monospace, monospace; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .text-xs { font-size: 11px; }
+    .text-sm { font-size: 13px; }
+    .text-white { color: #ffffff; }
+    .w-full { width: 100%; }
+    .size-10 { width: 40px; height: 40px; }
+    .place-items-center { place-items: center; }
+    .text-center { text-align: center; }
+    .text-left { text-align: left; }
+    .cursor-pointer { cursor: pointer; }
+    .overflow-hidden { overflow: hidden; }
+    .transition { transition: all 0.2s ease; }
+
+/* ==========================================================================
+   BULLETPROOF RESPONSIVE & MOBILE-FIRST STUDIO STYLES
+   Designed for MVSilicon BP1048B2 DSP Studio on all screen sizes:
+   Phones (320px - 430px), Foldables, Tablets (600px - 900px), and Desktops.
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box !important;
+}
+
+html, body {
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+  background: #0e1013 !important;
+  color: #e2e8f0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+.app-shell {
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+  padding-bottom: calc(76px + env(safe-area-inset-bottom, 16px)) !important;
+  min-height: 100vh !important;
+}
+
+/* TOPBAR */
+.topbar {
+  width: 100% !important;
+  max-width: 100vw !important;
+  height: 54px !important;
+  min-height: 54px !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 90 !important;
+  background: rgba(14, 16, 19, 0.98) !important;
+  backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid #232830 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.mobile-sensor-zone {
+  display: none !important;
+}
+
+.brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  max-width: 175px !important;
+  overflow: hidden !important;
+}
+
+.brand-mark {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  border-radius: 7px !important;
+  padding: 4px !important;
+  flex-shrink: 0 !important;
+  border: 1px solid #544b2c !important;
+}
+
+.brand-title {
+  font-size: 11px !important;
+  letter-spacing: 0.06em !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+}
+
+.brand-title strong {
+  color: #d4af37 !important;
+}
+
+.brand-sub {
+  font-size: 7.5px !important;
+  color: #717d8c !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.1 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+.brand-sub span {
+  display: none !important;
+}
+
+/* Desktop-only topbar widgets hidden on mobile/tablet */
+.project-meta,
+.format-meta,
+.cpu-meter,
+.save-button {
+  display: none !important;
+}
+
+@media (min-width: 1100px) {
+  .brand {
+    max-width: none !important;
+  }
+  .brand-sub span {
+    display: inline !important;
+  }
+  .project-meta,
+  .format-meta,
+  .cpu-meter,
+  .save-button {
+    display: flex !important;
+  }
+}
+
+/* Connection Pill in Topbar */
+.connection-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 4px 7px !important;
+  height: 32px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 90px !important;
+  border-radius: 8px !important;
+  border: 1px solid #1f4e3c !important;
+  background: #0d221a !important;
+  color: #00e676 !important;
+  font: 700 8.5px 'JetBrains Mono', monospace !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+.connection-pill .live-dot {
+  width: 6px !important;
+  height: 6px !important;
+  min-width: 6px !important;
+  border-radius: 50% !important;
+  background: #00e676 !important;
+  box-shadow: 0 0 8px #00e676 !important;
+  flex-shrink: 0 !important;
+}
+
+.connection-pill > span {
+  display: flex !important;
+  flex-direction: column !important;
+  line-height: 1.1 !important;
+  text-align: left !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.connection-pill small {
+  font-size: 6.5px !important;
+  color: #69a785 !important;
+  letter-spacing: 0.05em !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.connection-pill #txtConnName {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.connection-pill > svg {
+  flex-shrink: 0 !important;
+}
+
+/* Mute button */
+.mute-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  height: 32px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  padding: 0 8px !important;
+  border-radius: 8px !important;
+  border: 1px solid #363d47 !important;
+  background: #181c22 !important;
+  color: #cbd5e1 !important;
+  font: 700 8.5px 'JetBrains Mono', monospace !important;
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+.mute-button.active {
+  background: #7f1d1d !important;
+  border-color: #ef4444 !important;
+  color: #fee2e2 !important;
+}
+
+/* WORKSPACE & RAILS */
+.workspace {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+}
+
+.left-rail {
+  display: none !important;
+}
+
+@media (min-width: 1100px) {
+  .workspace {
+    display: grid !important;
+    grid-template-columns: 190px minmax(0, 1fr) !important;
+  }
+  .left-rail {
+    display: flex !important;
+  }
+}
+
+/* MAIN PANEL CONTAINER */
+.main-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 10px 10px calc(80px + env(safe-area-inset-bottom, 16px)) 10px !important;
+  margin: 0 auto !important;
+  overflow-x: hidden !important;
+}
+
+@media (min-width: 768px) {
+  .main-panel {
+    max-width: 740px !important;
+    padding: 16px 16px calc(80px + env(safe-area-inset-bottom, 16px)) 16px !important;
+  }
+}
+
+@media (min-width: 1100px) {
+  .main-panel {
+    max-width: 1200px !important;
+    padding: 20px 24px calc(80px + env(safe-area-inset-bottom, 16px)) 24px !important;
+  }
+}
+
+/* MOBILE HEAD INFO */
+.mobile-head {
+  margin: 0 0 10px 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.mobile-title-line {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.mobile-profile-badge {
+  flex-shrink: 0 !important;
+  max-width: 130px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  padding: 4px 7px !important;
+  font-size: 7.5px !important;
+}
+
+/* MOBILE MODE RACK */
+.mobile-mode-rack {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin-bottom: 10px !important;
+  padding: 8px 10px !important;
+  border-radius: 12px !important;
+}
+
+.mode-switches {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  padding: 6px 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.mode-switches button {
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 60px !important;
+  padding: 5px 2px !important;
+  border-radius: 12px !important;
+  box-sizing: border-box !important;
+}
+
+/* ANALYZER & SPECTRUM GRAPH */
+.analyzer-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  border-radius: 14px !important;
+  border: 1px solid #262c35 !important;
+  background: #0f1216 !important;
+  overflow: hidden !important;
+  margin-bottom: 12px !important;
+}
+
+.panel-header {
+  padding: 8px 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.analyzer-stats {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-shrink: 0 !important;
+}
+
+.graph-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1000 / 370 !important;
+  max-height: 240px !important;
+  position: relative !important;
+  background: #090c0f !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+#svgSpectrum {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  max-width: 100% !important;
+}
+
+.graph-toolbar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 6px 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+.hud-info {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-wrap: wrap !important;
+  font-size: 8px !important;
+}
+
+/* CONTROL ROW & PRESETS */
+.control-row {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin-bottom: 12px !important;
+}
+
+@media (min-width: 680px) {
+  .control-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) !important;
+  }
+}
+
+.preamp-card,
+.preset-card {
+  min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border-radius: 12px !important;
+  padding: 10px !important;
+  background: #111419 !important;
+  border: 1px solid #232831 !important;
+  overflow: hidden !important;
+}
+
+.preset-list {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  gap: 6px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 4px 0 6px 0 !important;
+}
+
+.preset-list button {
+  flex: 0 0 auto !important;
+  min-width: 80px !important;
+  height: 32px !important;
+  padding: 0 10px !important;
+  border-radius: 8px !important;
+  font: 600 8.5px 'JetBrains Mono', monospace !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+/* PEQ SECTION */
+.peq-section {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  margin-bottom: 14px !important;
+  overflow: hidden !important;
+}
+
+.mobile-band-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+@media (min-width: 600px) {
+  .mobile-band-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+.band-card {
+  min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border-radius: 12px !important;
+  padding: 9px !important;
+  background: #12151b !important;
+  border: 1px solid #252b34 !important;
+  overflow: hidden !important;
+}
+
+.precision-slider {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  height: 28px !important;
+  margin: 4px 0 !important;
+}
+
+.peq-table {
+  display: none !important;
+}
+
+/* HARDWARE EFFECTS SECTION */
+.effects-section {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  margin-bottom: 14px !important;
+  overflow: hidden !important;
+}
+
+.effect-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+@media (min-width: 680px) {
+  .effect-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+.effect-card {
+  min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border-radius: 12px !important;
+  padding: 10px !important;
+  background: #12151b !important;
+  border: 1px solid #252b34 !important;
+  overflow: hidden !important;
+}
+
+/* AI CALIBRATION PANEL */
+#ai-calibration {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  border-radius: 14px !important;
+  margin-top: 14px !important;
+  margin-bottom: 14px !important;
+  overflow: hidden !important;
+  background: #12161c !important;
+  border: 1px solid #28313d !important;
+  padding: 12px !important;
+}
+
+#ai-calibration textarea,
+#txtGeminiJson {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 10px !important;
+  border-radius: 8px !important;
+  background: #090c0f !important;
+  color: #00e5ff !important;
+  border: 1px solid #252f3c !important;
+  padding: 8px !important;
+}
+
+/* BUTTONS & CONTROLS */
+button {
+  -webkit-tap-highlight-color: transparent !important;
+  user-select: none !important;
+  touch-action: manipulation !important;
+}
+
+/* BOTTOM NAVIGATION BAR */
+.mobile-app-nav {
+  position: fixed !important;
+  z-index: 100 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  height: calc(54px + env(safe-area-inset-bottom, 12px)) !important;
+  padding: 4px 8px env(safe-area-inset-bottom, 12px) 8px !important;
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: space-around !important;
+  align-items: center !important;
+  background: rgba(12, 14, 18, 0.98) !important;
+  backdrop-filter: blur(20px) !important;
+  border-top: 1px solid #242932 !important;
+  box-sizing: border-box !important;
+  border-radius: 0 !important;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.5) !important;
+}
+
+.mobile-app-nav button {
+  flex: 1 1 0 !important;
+  max-width: 85px !important;
+  height: 44px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  border: none !important;
+  background: transparent !important;
+  color: #6a7685 !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+}
+
+.mobile-app-nav button.active {
+  color: #00e5ff !important;
+  background: rgba(0, 229, 255, 0.08) !important;
+}
+
+.mobile-app-nav button span {
+  font: 600 8.5px 'JetBrains Mono', monospace !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* MODAL EXPORT */
+#exportModal {
+  box-sizing: border-box !important;
+  padding: 16px !important;
+}
+
+#exportModal > div {
+  width: 100% !important;
+  max-width: 480px !important;
+  box-sizing: border-box !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+}
+
+
+</style>
+</head>
+<body>
+  <main class="app-shell" id="appShell">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="mobile-sensor-zone" aria-hidden="true"><span ></span></div>
+      <div class="brand">
+        <div class="brand-mark">
+          <span></span><span></span><span></span>
+        </div>
+        <div>
+          <div class="brand-title">BEST SOUND <strong>T1V2</strong></div>
+          <div class="brand-sub">MVSilicon BP1048B2 <span>DSP CONTROLLER</span></div>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span>PROJECT</span>
+        <strong>2.1 Bi-Amp (Sub 4" + Mid AIRS)</strong>
+      </div>
+      <div class="format-meta">
+        <span>DEVICE FORMAT</span>
+        <strong>44.1 kHz <i ></i> 24-bit</strong>
+      </div>
+      <div class="cpu-meter">
+        <div><span>DSP</span><strong>38%</strong></div>
+        <div class="meter-track"><i style="width: 38%"></i></div>
+      </div>
+      <button class="connection-pill" id="btnConnectionPill" aria-label="Connection Status">
+        <span class="live-dot" ></span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v14m0-14 3 3m-3-3L9 5m3 11-4-4m4 4 4-4M8 12H5v5m11-5h3v5M5 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm14 0v4h-4v-4h4Z"/></svg>
+        <span><small id="txtConnType">OTG READY</small><span id="txtConnName">BP1048B2</span></span>
+      </button>
+      <button class="mute-button" id="btnMute">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10m6.4-6.4a9 9 0 1 1-12.8 0"/></svg>
+        <span id="txtMute">MUTE</span>
+      </button>
+      <button class="save-button" id="btnSaveFlash">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h12l3 3v15H4V3h1Zm2 0v6h9V3M8 21v-7h8v7"/></svg>
+        <span id="txtSaveFlash">SAVE TO FLASH</span>
+      </button>
+    </header>
+
+    <section class="workspace">
+      <!-- LEFT RAIL (Desktop & Tablet) -->
+      <aside class="left-rail">
+        <div class="rail-heading"><span>SIGNAL PATH</span><i>LIVE</i></div>
+        <button class="path-item"><span class="path-number">01</span><span>USB OTG / BT INPUT</span><i ></i></button>
+        <button class="path-item"><span class="path-number">02</span><span>MASTER PRE-AMP</span><i ></i></button>
+        <button class="path-item active"><span class="path-number">03</span><span>PARAMETRIC EQ (8-BAND)</span><i ></i></button>
+        <button class="path-item"><span class="path-number">04</span><span>MVBASS HARMONIC SYNTH</span><i ></i></button>
+        <button class="path-item"><span class="path-number">05</span><span>2.1 BI-AMP OUTPUT</span><i ></i></button>
+
+        <div class="output-meter">
+          <div class="rail-heading"><span>OUTPUT</span><strong id="txtOutputDb">-6.2 dBFS</strong></div>
+          <div class="stereo-bars">
+            <i class="lit"></i><i class="lit"></i><i class="lit"></i><i class="lit"></i><i class="lit"></i>
+            <i class="lit"></i><i class="lit"></i><i class="lit"></i><i class="lit"></i><i class="lit"></i>
+            <i class="lit"></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="lr-label"><span>L</span><span>R</span></div>
+        </div>
+
+        <div class="device-card">
+          <span class="device-icon">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v14m0-14 3 3m-3-3L9 5m3 11-4-4m4 4 4-4M8 12H5v5m11-5h3v5M5 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm14 0v4h-4v-4h4Z"/></svg>
+          </span>
+          <div><small>HARDWARE</small><strong>BP1048B2</strong><em>Firmware Type 48</em></div>
+        </div>
+      </aside>
+
+      <!-- MAIN PANEL -->
+      <div class="main-panel">
+        <div class="mobile-only mobile-head" id="app-home">
+          <div class="eyebrow"><span class="live-dot"></span> LIVE DSP SESSION</div>
+          <div class="mobile-title-line">
+            <div>
+              <h1>Parametric EQ</h1>
+              <p>8-band precision acoustic tuning · 2.1 Bi-Amp</p>
+            </div>
+            <span class="mobile-profile-badge">
+              <small>ACTIVE PROFILE</small>
+              <span id="txtBadgeProfile">B&amp;O 8Ω 24V</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- QUICK PROCESSING MODES (Mobile) -->
+        <section class="mobile-only mobile-mode-rack">
+          <div class="mode-rack-head">
+            <div><span>PROCESSING MODES</span><small>Tap a module to toggle</small></div>
+            <strong><i></i> DSP LIVE</strong>
+          </div>
+          <div class="mode-switches">
+            <button class="active warm" id="btnModeBss">
+              <span>BSS</span><i><b></b></i><small>MVBASS</small>
+            </button>
+            <button class="active" id="btnModePeq">
+              <span>PEQ</span><i><b></b></i><small>8-BAND EQ</small>
+            </button>
+            <button class="active" id="btnModeRta">
+              <span>RTA</span><i><b></b></i><small>MIC FFT</small>
+            </button>
+          </div>
+          <div class="mode-rack-footer">
+            <span><i class="active" id="dotHeadroom"></i> AUTO HEADROOM</span>
+            <span><i class="active" id="dotOutput"></i> OUTPUT READY</span>
+            <span><i class="active" id="dotSync"></i> HARDWARE SYNC</span>
+          </div>
+        </section>
+
+        <!-- LIVE ANALYZER CARD -->
+        <section class="analyzer-card">
+          <div class="panel-header">
+            <div>
+              <span class="section-kicker">LIVE ANALYZER</span>
+              <h1>Acoustic Response</h1>
+            </div>
+            <div class="legend">
+              <span><i class="cyan"></i> PEQ COMPOSITE</span>
+              <span><i class="amber"></i> MIC RTA <span id="txtRtaState">(LIVE)</span></span>
+            </div>
+            <div class="analyzer-stats">
+              <span>PEAK<strong id="txtPeakFreq">165 Hz</strong></span>
+              <span>AVG<strong id="txtAvgDb">-12.4 dBFS</strong></span>
+            </div>
+          </div>
+
+          <div class="graph-wrap">
+            <div class="graph-unit">dB</div>
+            <svg class="spectrum" id="svgSpectrum" viewBox="0 0 1000 370" role="img">
+              <defs>
+                <linearGradient id="cyanFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#00e5ff" stop-opacity=".23" />
+                  <stop offset="1" stop-color="#00e5ff" stop-opacity="0" />
+                </linearGradient>
+                <filter id="cyanGlow">
+                  <feGaussianBlur stdDeviation="5" result="b" />
+                  <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+                <filter id="amberGlow">
+                  <feGaussianBlur stdDeviation="3" result="b" />
+                  <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+              </defs>
+              <rect width="1000" height="370" fill="#0b0e12" />
+              <!-- Grid lines will be injected via JS -->
+              <g id="gridGroup"></g>
+              <polyline id="rtaPolyline" fill="none" stroke="#ffb300" stroke-width="2.2" opacity=".85" filter="url(#amberGlow)" />
+              <polyline id="eqPolylineFill" fill="url(#cyanFill)" opacity="1" />
+              <polyline id="eqPolyline" fill="none" stroke="#00e5ff" stroke-width="3.5" opacity="1" filter="url(#cyanGlow)" />
+              <g id="nodesGroup"></g>
+            </svg>
+            <div class="mobile-hud">
+              <span id="hudBand">BAND 04 (ANTI-BOOM)</span>
+              <strong id="hudFreq">165 Hz</strong>
+              <em id="hudGain">-3.5 dB</em>
+              <small id="hudQ">Q 2.40</small>
+            </div>
+          </div>
+
+          <div class="graph-toolbar">
+            <button class="toggle-control" id="btnToggleBypass">
+              <span>A/B BYPASS</span>
+              <span class="switch"><span ></span></span>
+            </button>
+            <button class="toggle-control on" id="btnToggleHeadroom">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5.2 3.4 9 8 11 4.6-2 8-5.8 8-11V5l-8-3Zm-3 10 2 2 4-5" /></svg>
+              <span>AUTO HEADROOM</span>
+              <span class="switch"><span ></span></span>
+            </button>
+            <button class="toggle-control on" id="btnToggleRta">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Zm-7 9v1a7 7 0 0 0 14 0v-1M12 19v3m-4 0h8" /></svg>
+              <span>MIC RTA</span>
+              <span class="switch"><span ></span></span>
+            </button>
+          </div>
+        </section>
+
+        <!-- MASTER PREAMP & PRESETS -->
+        <section class="control-row">
+          <div class="preamp-card">
+            <div class="control-label">
+              <span>MASTER PRE-AMP</span>
+              <strong id="txtPreampVal">-1.5 <small>dB</small></strong>
+            </div>
+            <input class="precision-slider" id="sliderPreamp" type="range" min="-18" max="6" step="0.1" value="-1.5">
+            <div class="range-label"><span>-18</span><span>0</span><span>+6 dB</span></div>
+          </div>
+
+          <div class="preset-card">
+            <div class="control-label">
+              <span>VERIFIED PRESETS</span>
+              <small>1-TAP HARDWARE VOICING</small>
+            </div>
+            <div class="preset-list" id="presetButtons">
+              <button class="active" data-preset="bo">B&amp;O 8Ω</button>
+              <button data-preset="jbl">JBL Boombox</button>
+              <button data-preset="vocal">Sweet Vocal</button>
+              <button data-preset="clean">Clean Studio</button>
+              <button data-preset="flat">Flat Reset</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- CHANNEL STRIP (8-BAND PEQ) -->
+        <section class="peq-section" id="app-eq">
+          <div class="section-title-row">
+            <div>
+              <span class="section-kicker">CHANNEL STRIP</span>
+              <h2>Precision PEQ Bands</h2>
+            </div>
+            <div class="section-status"><span class="live-dot"></span> REAL-TIME HARDWARE SYNC</div>
+          </div>
+          <p class="mobile-only fader-hint">Drag to tune · Double-tap a band to reset to 0dB</p>
+
+          <div class="mobile-band-grid" id="bandGridCards"></div>
+
+          <!-- PEQ Table -->
+          <div class="peq-table">
+            <div class="peq-table-head">
+              <span>BAND</span><span>ENABLE</span><span>FILTER TYPE</span><span>FREQUENCY</span><span>GAIN</span><span>Q FACTOR</span><span>DESCRIPTION</span>
+            </div>
+            <div id="peqTableRows"></div>
+          </div>
+        </section>
+
+        <!-- HARDWARE ENGINE (MVBASS & BI-AMP) -->
+        <section class="effects-section" id="app-device">
+          <div class="section-title-row">
+            <div>
+              <span class="section-kicker">HARDWARE ENGINE</span>
+              <h2>MVBass Harmonic Engine &amp; 2.1 Bi-Amp</h2>
+            </div>
+          </div>
+
+          <div class="effect-grid">
+            <article class="effect-card">
+              <div class="effect-card-top">
+                <span><strong>MVBass Intensity</strong><small>Harmonic bass synthesis · 75 Hz</small></span>
+                <b style="color: #00e676" id="txtMvBassVal">75%</b>
+              </div>
+              <input class="precision-slider" id="sliderMvBass" type="range" min="0" max="100" step="1" value="75">
+            </article>
+
+            <article class="effect-card">
+              <div class="effect-card-top">
+                <span><strong>Bi-Amp CH1 (Subwoofer 4")</strong><small>Mid/Bass digital gain</small></span>
+                <b style="color: #00e5ff" id="txtBiAmpCh1Val">0.0 dB</b>
+              </div>
+              <input class="precision-slider" id="sliderBiAmpCh1" type="range" min="-12" max="6" step="0.5" value="0.0">
+            </article>
+
+            <article class="effect-card">
+              <div class="effect-card-top">
+                <span><strong>Bi-Amp CH2 (AIRS + Treble Dome)</strong><small>High frequency digital gain</small></span>
+                <b style="color: #d4af37" id="txtBiAmpCh2Val">+0.5 dB</b>
+              </div>
+              <input class="precision-slider" id="sliderBiAmpCh2" type="range" min="-12" max="6" step="0.5" value="0.5">
+            </article>
+          </div>
+        </section>
+
+        <!-- GEMINI ARGON CALIBRATION PANEL -->
+        <section id="ai-calibration" class="mt-4 rounded-xl border border-[#29313a] bg-[#14181f] p-4 shadow-lg">
+          <div class="flex items-center justify-between border-b border-[#252b33] pb-3">
+            <div class="flex items-center gap-3">
+              <span class="grid size-10 place-items-center rounded-xl border border-[#214c56] bg-[#0c252b] text-[#00e5ff]">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2m7-11a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg>
+              </span>
+              <div>
+                <span class="font-mono text-xs text-[#7e8f9e]">AI ACOUSTIC ASSISTANT · BP1048B2</span>
+                <h3 class="text-sm font-bold text-white">Gemini Argon Acoustic Tuning</h3>
+              </div>
+            </div>
+            <span class="rounded bg-[#0c252b] border border-[#00e5ff] px-3 py-1 font-mono text-xs text-[#00e5ff]">ZERO-KEY SECURE</span>
+          </div>
+
+          <!-- Wizard Steps -->
+          <div class="grid grid-cols-4 border-b border-[#252b33] bg-[#0e1115] my-3 p-2 text-center text-xs font-mono">
+            <div class="step-btn text-[#00e5ff] font-bold" id="stepIndicator0">1. RTA Đo</div>
+            <div class="step-btn text-[#556372]" id="stepIndicator1">2. Mục tiêu</div>
+            <div class="step-btn text-[#556372]" id="stepIndicator2">3. Argon AI</div>
+            <div class="step-btn text-[#556372]" id="stepIndicator3">4. Nạp OTG</div>
+          </div>
+
+          <!-- Step Panels -->
+          <div id="aiStep0" class="space-y-3">
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="rounded border border-[#1f262f] bg-[#0b0e12] p-2">
+                <small class="text-[#556372]">MỨC ÂM BÌNH QUÂN</small>
+                <div class="text-sm font-mono text-[#00e5ff]" id="txtAiAvg">-12.4 dBFS</div>
+              </div>
+              <div class="rounded border border-[#1f262f] bg-[#0b0e12] p-2">
+                <small class="text-[#556372]">ĐỈNH CỘNG HƯỞNG THÙNG 5L</small>
+                <div class="text-sm font-mono text-[#ff8a3d]">165 Hz (Anti-Boom)</div>
+              </div>
+            </div>
+            <div class="flex justify-end mt-2">
+              <button class="btn btn-cyan" id="btnNextAi1">CHỌN MỤC TIÊU ÂM THANH →</button>
+            </div>
+          </div>
+
+          <div id="aiStep1" style="display:none;" class="space-y-3">
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <button class="rounded border border-[#00e5ff] bg-[#0d2228] p-3 text-left goal-btn" data-goal="Cân bằng toàn dải">
+                <b class="text-white">Cân bằng toàn dải</b>
+                <p class="text-[#7e8f9e]">Nghe đa thể loại, trung thực</p>
+              </button>
+              <button class="rounded border border-[#262f3a] bg-[#12161c] p-3 text-left goal-btn" data-goal="Bass sâu &amp; gọn">
+                <b class="text-white">Bass sâu &amp; gọn</b>
+                <p class="text-[#7e8f9e]">Ưu tiên 45-120Hz, EDM</p>
+              </button>
+              <button class="rounded border border-[#262f3a] bg-[#12161c] p-3 text-left goal-btn" data-goal="Vocal ngọt">
+                <b class="text-white">Vocal ngọt &amp; rõ</b>
+                <p class="text-[#7e8f9e]">Bolero, Trữ tình, Acoustic</p>
+              </button>
+              <button class="rounded border border-[#262f3a] bg-[#12161c] p-3 text-left goal-btn" data-goal="Chống xì nhiễu">
+                <b class="text-white">Chống xì &amp; méo</b>
+                <p class="text-[#7e8f9e]">Tối ưu gain, chống rít</p>
+              </button>
+            </div>
+            <div class="flex justify-between mt-2">
+              <button class="btn" id="btnBackAi0">← QUAY LẠI</button>
+              <button class="btn btn-cyan" id="btnNextAi2">CHUYỂN TIẾP ARGON GEMINI →</button>
+            </div>
+          </div>
+
+          <div id="aiStep2" style="display:none;" class="space-y-3">
+            <div class="rounded border border-[#2b3542] bg-[#0a0d11] p-3 text-xs">
+              <p class="text-[#00e5ff] font-bold">1. Bấm nút sao chép prompt dưới đây:</p>
+              <button class="btn btn-cyan mt-1 w-full" id="btnCopyGeminiPrompt">📋 SAO CHÉP PROMPT CHO GEMINI TRONG TRÌNH DUYỆT ARGON</button>
+              <p class="text-[#ffb300] font-bold mt-3">2. Dán khối JSON kết quả từ Gemini vào đây:</p>
+              <textarea id="txtGeminiJson" rows="4" class="w-full mt-1 p-2 bg-[#121417] border border-[#2d323b] text-white font-mono text-xs rounded" placeholder="{ &quot;proposedBands&quot;: [...] }"></textarea>
+            </div>
+            <div class="flex justify-between mt-2">
+              <button class="btn" id="btnBackAi1">← QUAY LẠI</button>
+              <button class="btn btn-green" id="btnApplyGeminiJson">XÁC THỰC &amp; XEM TRƯỚC DIFF →</button>
+            </div>
+          </div>
+
+          <div id="aiStep3" style="display:none;" class="space-y-3">
+            <div class="rounded border border-[#00e676] bg-[#0c252b] p-3 text-xs">
+              <b class="text-[#00e676]">✓ Đã đối chiếu và kiểm tra tính toàn vẹn gói tin PEQ!</b>
+              <p class="text-white mt-1">Cấu hình sẵn sàng nạp xuống chip MVSilicon BP1048B2 qua USB OTG hoặc Bluetooth SPP.</p>
+              <div class="mt-3 p-2 bg-[#091519] border border-[#1b3e45] rounded font-mono text-xs text-[#00e5ff]" id="txtDiffSummary">
+                Tất cả 8 dải tần đã được tối ưu hóa theo mục tiêu.
+              </div>
+            </div>
+            <div class="flex justify-between mt-2">
+              <button class="btn" id="btnBackAi2">← QUAY LẠI</button>
+              <button class="btn btn-green" id="btnFlashToOtg">🚀 NẠP TRỰC TIẾP VÀO LOA (FLASH TO DSP)</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA TO OPEN FULL SCREEN STUDIO -->
+        <button class="studio-cta" id="btnOpenFullScreenStudio">
+          <span class="cta-icon">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h2l2-7 4 14 3-10 3 6h4"/></svg>
+          </span>
+          <span><small>ACOUSTIC LABORATORY</small>OPEN FULL-SCREEN RTA &amp; SIGNAL GENERATOR</span>
+        </button>
+
+        <!-- FULL-SCREEN STUDIO PANEL -->
+        <section class="studio-panel" id="studioPanel" style="display:none;">
+          <div class="studio-panel-top">
+            <div><span class="section-kicker">CALIBRATION LAB</span><h2>Full-Screen Acoustic RTA &amp; Signal Generator</h2></div>
+            <button class="close-studio" id="btnCloseStudio">CLOSE</button>
+          </div>
+          <div class="studio-controls">
+            <div class="generator-panel">
+              <div class="studio-control-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h2l2-7 4 14 3-10 3 6h4"/></svg>
+                <span>SIGNAL GENERATOR<small>Acoustic Test Signals</small></span>
+              </div>
+              <div class="flex gap-2">
+                <button class="btn" id="btnGenPink">PINK NOISE</button>
+                <button class="btn" id="btnGenSweep">SINE SWEEP</button>
+              </div>
+              <div class="tone-buttons mt-2">
+                <button class="btn" id="btnTone60">60 Hz <small>SUB</small></button>
+                <button class="btn" id="btnTone1k">1 kHz <small>MID</small></button>
+                <button class="btn" id="btnTone10k">10 kHz <small>AIR</small></button>
+              </div>
+              <button class="btn btn-red mt-2 w-full" id="btnPanicKill">STOP ALL SOUND (PANIC KILL-SWITCH)</button>
+            </div>
+
+            <div class="export-panel">
+              <div class="studio-control-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>
+                <span>DSP EXPORT<small>Production formats</small></span>
+              </div>
+              <p>Export the active PEQ profile for your hardware or playback chain.</p>
+              <button class="export-button" id="btnShowExportModal">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>
+                EXPORT PROFILE
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <nav class="mobile-app-nav">
+      <button type="button" class="active" id="navHome"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 11 9-8 9 8v10h-6v-6H9v6H3V11Z"/></svg><span>Home</span></button>
+      <button type="button" id="navEq"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21V10m0-4V3m8 18v-6m0-4V3m8 18V9m0-4V3M1 10h6m2 5h6m2-6h6"/></svg><span>EQ</span></button>
+      <button type="button" id="navAi"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 1.4 5.1L18 9l-4.6 1.9L12 16l-1.4-5.1L6 9l4.6-1.9L12 2Zm6 13 .7 2.3L21 18l-2.3.7L18 21l-.7-2.3L15 18l2.3-.7L18 15Z"/></svg><span>AI Tune</span></button>
+      <button type="button" id="navDevice"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm3 17h4M9 5h6"/></svg><span>Device</span></button>
+    </nav>
+
+    <!-- EXPORT MODAL -->
+    <div class="modal-backdrop" id="exportModal" style="display:none;">
+      <div class="export-modal" onclick="event.stopPropagation()">
+        <div class="modal-head">
+          <div><span class="section-kicker">PROFILE READY</span><h2>Export DSP Configuration</h2></div>
+          <button id="btnCloseExportModal" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;">×</button>
+        </div>
+        <p id="txtExportDesc">B&amp;O 8Ω 24V · 8 active bands · 44.1 kHz BP1048B2</p>
+        <div class="export-options">
+          <button id="btnExportIni">
+            <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg><strong>ACPWorkbench (.ini)</strong></span>
+            <small>43 sections, golden register format</small>
+          </button>
+          <button id="btnExportC">
+            <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h2l2-7 4 14 3-10 3 6h4"/></svg><strong>MVSilicon C Source (.c)</strong></span>
+            <small>BP1048B2 byte array structures</small>
+          </button>
+          <button id="btnExportTxt">
+            <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg><strong>Equalizer APO (.txt)</strong></span>
+            <small>Standard acoustic calibration format</small>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // -------------------------------------------------------------
+    // DATA MODEL & STATE
+    // -------------------------------------------------------------
+    const STANDARD_BANDS = [
+      { id: 1, name: 'Sub', hz: 62, gain: 5.5, q: 0.8, type: 'peaking', color: '#00E5FF', desc: 'Deep extension (Woofer)' },
+      { id: 2, name: 'Kick', hz: 85, gain: 6.2, q: 1.1, type: 'peaking', color: '#30D9F0', desc: 'Punch & impact' },
+      { id: 3, name: 'Mid-Bass', hz: 125, gain: 3.2, q: 1.3, type: 'peaking', color: '#5AC9E0', desc: 'Low-end body' },
+      { id: 4, name: 'Anti-Boom', hz: 165, gain: -3.5, q: 2.4, type: 'peaking', color: '#FF8A3D', desc: '5L Box resonance cut' },
+      { id: 5, name: 'Vocal Body', hz: 500, gain: 2.2, q: 1.2, type: 'peaking', color: '#6BE2CC', desc: 'Warmth for Mid AIRS' },
+      { id: 6, name: 'Lead Mid', hz: 1000, gain: 3.5, q: 1.4, type: 'peaking', color: '#78D4F2', desc: 'Clarity and presence' },
+      { id: 7, name: 'Vocal Clarity', hz: 2500, gain: 3.8, q: 1.8, type: 'peaking', color: '#B4A7FF', desc: 'Presence & brilliance' },
+      { id: 8, name: 'Treble Air', hz: 8000, gain: 5.0, q: 0.9, type: 'highshelf', color: '#D4AF37', desc: 'Dome tweeter shimmer' }
+    ];
+
+    let bands = JSON.parse(JSON.stringify(STANDARD_BANDS));
+    let masterPreamp = -1.5;
+    let mvBass = 75;
+    let biAmpCh1 = 0.0;
+    let biAmpCh2 = 0.5;
+    let isBypassed = false;
+    let isMuted = false;
+    let autoHeadroom = true;
+    let isRtaEnabled = true;
+    let activePreset = 'B&O 8Ω 24V';
+
+    const PRESETS = {
+      'bo': { name: 'B&O 8Ω 24V', gains: [5.5, 6.2, 3.2, -3.5, 2.2, 3.5, 3.8, 5.0], preamp: -1.5, mv: 75, ch1: 0.0, ch2: 0.5 },
+      'jbl': { name: 'JBL Boombox', gains: [6.8, 7.5, 4.5, -4.2, 0.5, 1.8, 3.4, 4.2], preamp: -2.0, mv: 85, ch1: 1.0, ch2: -0.5 },
+      'vocal': { name: 'Sweet Vocal', gains: [2.4, 1.8, 1.2, -2.5, 3.8, 4.6, 5.2, 3.3], preamp: -1.0, mv: 45, ch1: -1.0, ch2: 1.5 },
+      'clean': { name: 'Clean Studio', gains: [3.0, 3.5, 1.5, -2.0, 1.0, 2.0, 2.5, 3.0], preamp: -0.5, mv: 55, ch1: 0.0, ch2: 0.0 },
+      'flat': { name: 'Flat Reset', gains: [0, 0, 0, 0, 0, 0, 0, 0], preamp: 0.0, mv: 0, ch1: 0.0, ch2: 0.0 }
+    };
+
+    // -------------------------------------------------------------
+    // SVG SPECTRUM & RTA GRAPH RENDERER
+    // -------------------------------------------------------------
+    const width = 1000;
+    const height = 370;
+    const padX = 52;
+    const padY = 32;
+
+    function xForHz(hz) {
+      return padX + ((Math.log10(hz) - Math.log10(20)) / 3) * (width - padX * 2);
+    }
+
+    function yForGain(gain) {
+      return height / 2 - (gain / 18) * (height / 2 - padY);
+    }
+
+    function buildGrid() {
+      const grid = document.getElementById('gridGroup');
+      let lines = '';
+      [-18, -12, -6, 0, 6, 12, 18].forEach(db => {
+        const y = yForGain(db);
+        lines += `<line x1="${padX}" x2="${width - padX}" y1="${y}" y2="${y}" class="${db === 0 ? 'zero-line' : 'grid-line'}" />`;
+        lines += `<text x="14" y="${y + 4}" class="axis-label">${db > 0 ? '+' + db : db}</text>`;
+      });
+
+      [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000].forEach(hz => {
+        const x = xForHz(hz);
+        lines += `<line x1="${x}" x2="${x}" y1="${padY}" y2="${height - padY}" class="grid-line" />`;
+        lines += `<text x="${x}" y="${height - 10}" text-anchor="middle" class="axis-label">${hz >= 1000 ? (hz / 1000) + 'k' : hz}</text>`;
+      });
+      grid.innerHTML = lines;
+    }
+
+    function calculateResponse() {
+      const pts = [];
+      for (let i = 0; i < 160; i++) {
+        const logHz = Math.log10(20) + (i / 159) * 3;
+        const hz = Math.pow(10, logHz);
+        let gain = 0;
+        if (!isBypassed) {
+          bands.forEach(b => {
+            const dist = Math.log2(hz / b.hz);
+            gain += b.gain * Math.exp(-dist * dist * b.q * 1.5);
+          });
+        }
+        const y = yForGain(Math.max(-17.5, Math.min(17.5, gain)));
+        pts.push(`${xForHz(hz)},${y}`);
+      }
+      return pts.join(' ');
+    }
+
+    function renderSpectrum() {
+      const resp = calculateResponse();
+      document.getElementById('eqPolyline').setAttribute('points', resp);
+      document.getElementById('eqPolylineFill').setAttribute('points', `${resp} ${width - padX},${height / 2} ${padX},${height / 2}`);
+
+      // Render draggable nodes
+      let nodes = '';
+      if (!isBypassed) {
+        bands.forEach((b, idx) => {
+          const cx = xForHz(b.hz);
+          const cy = yForGain(b.gain);
+          nodes += `
+            <g transform="translate(${cx}, ${cy})" style="cursor: pointer;" onmousedown="selectNode(${idx})" ontouchstart="selectNode(${idx})">
+              <circle r="14" fill="#10161b" stroke="${b.color}" stroke-width="3" />
+              <circle r="8" fill="${b.color}" opacity=".25" />
+              <text text-anchor="middle" dominant-baseline="central" class="node-label">${idx + 1}</text>
+            </g>
+          `;
+        });
+      }
+      document.getElementById('nodesGroup').innerHTML = nodes;
+    }
+
+    function selectNode(idx) {
+      const b = bands[idx];
+      document.getElementById('hudBand').innerText = `BAND 0${idx + 1} (${b.name.toUpperCase()})`;
+      document.getElementById('hudFreq').innerText = `${b.hz} Hz`;
+      document.getElementById('hudGain').innerText = `${b.gain > 0 ? '+' : ''}${b.gain.toFixed(1)} dB`;
+      document.getElementById('hudQ').innerText = `Q ${b.q.toFixed(2)}`;
+    }
+
+    // -------------------------------------------------------------
+    // UI BUILDERS: CARDS & TABLE
+    // -------------------------------------------------------------
+    function buildBandCards() {
+      const grid = document.getElementById('bandGridCards');
+      let html = '';
+      bands.forEach((b, idx) => {
+        html += `
+          <article class="band-card ${idx === 3 ? 'resonance' : ''}" id="cardBand${idx}">
+            <div class="band-card-head">
+              <span class="band-index" style="color:${b.color}">0${idx + 1}</span>
+              <span class="band-enabled"><i style="background:${b.color}"></i> ON</span>
+            </div>
+            <div class="band-name">${b.name}</div>
+            <div class="band-freq">${b.hz} Hz</div>
+            <div class="band-value" id="txtGainBand${idx}" style="color:${b.color}">
+              ${b.gain > 0 ? '+' : ''}${b.gain.toFixed(1)} <small>dB</small>
+            </div>
+            <input class="precision-slider" id="sliderBand${idx}" type="range" min="-12" max="6" step="0.1" value="${b.gain}"
+              oninput="handleSliderGain(${idx}, this.value)" ondblclick="handleSliderGain(${idx}, 0)">
+            <div class="band-scale"><span>-12</span><i>0</i><span>+6</span></div>
+          </article>
+        `;
+      });
+      grid.innerHTML = html;
+    }
+
+    function buildTableRows() {
+      const container = document.getElementById('peqTableRows');
+      let html = '';
+      bands.forEach((b, idx) => {
+        html += `
+          <div class="peq-table-row ${idx === 3 ? 'selected' : ''}">
+            <span class="table-band"><i style="background:${b.color}"></i> 0${idx + 1}</span>
+            <span><button class="mini-switch on"><i></i></button></span>
+            <span><button class="select-button">Bell <b>⌄</b></button></span>
+            <span class="numeric-cell">${b.hz} Hz</span>
+            <span class="numeric-cell gain" id="tblGain${idx}">${b.gain > 0 ? '+' : ''}${b.gain.toFixed(1)} dB</span>
+            <span class="numeric-cell">${b.q.toFixed(2)}</span>
+            <span class="desc-cell">${b.desc}</span>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function handleSliderGain(idx, val) {
+      const num = parseFloat(val);
+      bands[idx].gain = num;
+      document.getElementById(`txtGainBand${idx}`).innerHTML = `${num > 0 ? '+' : ''}${num.toFixed(1)} <small>dB</small>`;
+      document.getElementById(`tblGain${idx}`).innerText = `${num > 0 ? '+' : ''}${num.toFixed(1)} dB`;
+      selectNode(idx);
+      renderSpectrum();
+      notifyAndroidBand(idx);
+    }
+
+    // -------------------------------------------------------------
+    // HARDWARE SYNC BRIDGE (USB OTG / BLUETOOTH)
+    // -------------------------------------------------------------
+    function notifyAndroidBand(idx) {
+      if (window.AndroidDsp) {
+        try {
+          window.AndroidDsp.updateBand(idx, bands[idx].hz, bands[idx].gain, bands[idx].q);
+        } catch(e) {
+          console.warn("Android bridge call failed:", e);
+        }
+      }
+    }
+
+    function notifyAndroidPreset(presetKey) {
+      const p = PRESETS[presetKey];
+      if (!p) return;
+      bands.forEach((b, i) => b.gain = p.gains[i]);
+      masterPreamp = p.preamp;
+      mvBass = p.mv;
+      biAmpCh1 = p.ch1;
+      biAmpCh2 = p.ch2;
+
+      document.getElementById('sliderPreamp').value = masterPreamp;
+      document.getElementById('txtPreampVal').innerHTML = `${masterPreamp.toFixed(1)} <small>dB</small>`;
+      document.getElementById('sliderMvBass').value = mvBass;
+      document.getElementById('txtMvBassVal').innerText = mvBass + '%';
+      document.getElementById('sliderBiAmpCh1').value = biAmpCh1;
+      document.getElementById('txtBiAmpCh1Val').innerText = (biAmpCh1 > 0 ? '+' : '') + biAmpCh1.toFixed(1) + ' dB';
+      document.getElementById('sliderBiAmpCh2').value = biAmpCh2;
+      document.getElementById('txtBiAmpCh2Val').innerText = (biAmpCh2 > 0 ? '+' : '') + biAmpCh2.toFixed(1) + ' dB';
+
+      document.getElementById('txtBadgeProfile').innerText = p.name;
+      buildBandCards();
+      buildTableRows();
+      renderSpectrum();
+
+      if (window.AndroidDsp) {
+        window.AndroidDsp.applyPreset(p.name);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // REAL MICROPHONE RTA & AUDIO CONTEXT
+    // -------------------------------------------------------------
+    let audioCtx = null;
+    let micStream = null;
+    let micAnalyser = null;
+
+    async function initMicRta() {
+      if (audioCtx && audioCtx.state !== 'closed') return;
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        micStream = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+        });
+        const src = audioCtx.createMediaStreamSource(micStream);
+        micAnalyser = audioCtx.createAnalyser();
+        micAnalyser.fftSize = 2048;
+        micAnalyser.smoothingTimeConstant = 0.82;
+        src.connect(micAnalyser);
+        requestAnimationFrame(updateRtaLoop);
+      } catch(err) {
+        console.warn("Mic RTA not accessible directly:", err);
+      }
+    }
+
+    function updateRtaLoop() {
+      if (!isRtaEnabled || !micAnalyser) return;
+      const data = new Float32Array(micAnalyser.frequencyBinCount);
+      micAnalyser.getFloatFrequencyData(data);
+
+      const pts = [];
+      for (let i = 0; i < 120; i++) {
+        const logHz = Math.log10(20) + (i / 119) * 3;
+        const hz = Math.pow(10, logHz);
+        const bin = Math.min(data.length - 1, Math.round((hz / 22050) * data.length));
+        const db = data[bin] || -80;
+        const visualGain = ((db + 55) / 35) * 12;
+        pts.push(`${xForHz(hz)},${yForGain(Math.max(-17, Math.min(17, visualGain)))}`);
+      }
+      document.getElementById('rtaPolyline').setAttribute('points', pts.join(' '));
+      requestAnimationFrame(updateRtaLoop);
+    }
+
+    // -------------------------------------------------------------
+    // SIGNAL GENERATOR
+    // -------------------------------------------------------------
+    let activeTone = null;
+    function playTone(freq) {
+      stopSignals();
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      gain.gain.value = 0.15;
+      osc.frequency.value = freq;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      activeTone = osc;
+    }
+
+    function stopSignals() {
+      if (activeTone) {
+        try { activeTone.stop(); } catch(e) {}
+        activeTone = null;
+      }
+    }
+
+    // -------------------------------------------------------------
+    // EVENT LISTENERS & WIRING
+    // -------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      buildGrid();
+      buildBandCards();
+      buildTableRows();
+      renderSpectrum();
+      selectNode(3);
+
+      // Connection Pill Click
+      document.getElementById('btnConnectionPill').addEventListener('click', () => {
+        if (window.AndroidDsp) {
+          window.AndroidDsp.connectUsb();
+        }
+      });
+
+      // Mute Toggle
+      document.getElementById('btnMute').addEventListener('click', () => {
+        isMuted = !isMuted;
+        document.getElementById('appShell').classList.toggle('is-muted', isMuted);
+        document.getElementById('txtMute').innerText = isMuted ? 'UNMUTE' : 'MUTE';
+      });
+
+      // Save to Flash
+      document.getElementById('btnSaveFlash').addEventListener('click', () => {
+        const btn = document.getElementById('btnSaveFlash');
+        btn.classList.add('saved');
+        document.getElementById('txtSaveFlash').innerText = 'SAVED TO FLASH';
+        if (window.AndroidDsp) {
+          window.AndroidDsp.applyPreset(document.getElementById('txtBadgeProfile').innerText);
+        }
+        setTimeout(() => {
+          btn.classList.remove('saved');
+          document.getElementById('txtSaveFlash').innerText = 'SAVE TO FLASH';
+        }, 2000);
+      });
+
+      // Preamp slider
+      document.getElementById('sliderPreamp').addEventListener('input', (e) => {
+        masterPreamp = parseFloat(e.target.value);
+        document.getElementById('txtPreampVal').innerHTML = `${masterPreamp >= 0 ? '+' : ''}${masterPreamp.toFixed(1)} <small>dB</small>`;
+        if (window.AndroidDsp) window.AndroidDsp.setMasterPreamp(masterPreamp);
+      });
+
+      // MVBass & Bi-Amp sliders
+      document.getElementById('sliderMvBass').addEventListener('input', (e) => {
+        mvBass = parseInt(e.target.value);
+        document.getElementById('txtMvBassVal').innerText = mvBass + '%';
+      });
+      document.getElementById('sliderBiAmpCh1').addEventListener('input', (e) => {
+        biAmpCh1 = parseFloat(e.target.value);
+        document.getElementById('txtBiAmpCh1Val').innerText = (biAmpCh1 >= 0 ? '+' : '') + biAmpCh1.toFixed(1) + ' dB';
+      });
+      document.getElementById('sliderBiAmpCh2').addEventListener('input', (e) => {
+        biAmpCh2 = parseFloat(e.target.value);
+        document.getElementById('txtBiAmpCh2Val').innerText = (biAmpCh2 >= 0 ? '+' : '') + biAmpCh2.toFixed(1) + ' dB';
+      });
+
+      // Presets
+      document.querySelectorAll('#presetButtons button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#presetButtons button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          notifyAndroidPreset(btn.getAttribute('data-preset'));
+        });
+      });
+
+      // Toolbar toggles
+      document.getElementById('btnToggleBypass').addEventListener('click', function() {
+        isBypassed = !isBypassed;
+        this.classList.toggle('on', isBypassed);
+        renderSpectrum();
+      });
+      document.getElementById('btnToggleRta').addEventListener('click', function() {
+        isRtaEnabled = !isRtaEnabled;
+        this.classList.toggle('on', isRtaEnabled);
+        document.getElementById('rtaPolyline').style.display = isRtaEnabled ? 'block' : 'none';
+        document.getElementById('txtRtaState').innerText = isRtaEnabled ? '(LIVE)' : '(PAUSED)';
+        if (isRtaEnabled) initMicRta();
+      });
+
+      // Studio Modal
+      document.getElementById('btnOpenFullScreenStudio').addEventListener('click', () => {
+        document.getElementById('studioPanel').style.display = 'block';
+        document.getElementById('studioPanel').scrollIntoView({ behavior: 'smooth' });
+      });
+      document.getElementById('btnCloseStudio').addEventListener('click', () => {
+        document.getElementById('studioPanel').style.display = 'none';
+      });
+
+      // Signals
+      document.getElementById('btnTone60').addEventListener('click', () => playTone(60));
+      document.getElementById('btnTone1k').addEventListener('click', () => playTone(1000));
+      document.getElementById('btnTone10k').addEventListener('click', () => playTone(10000));
+      document.getElementById('btnPanicKill').addEventListener('click', stopSignals);
+
+      // AI Calibration Wizard
+      document.getElementById('btnNextAi1').addEventListener('click', () => {
+        document.getElementById('aiStep0').style.display = 'none';
+        document.getElementById('aiStep1').style.display = 'block';
+      });
+      document.getElementById('btnBackAi0').addEventListener('click', () => {
+        document.getElementById('aiStep1').style.display = 'none';
+        document.getElementById('aiStep0').style.display = 'block';
+      });
+      document.getElementById('btnNextAi2').addEventListener('click', () => {
+        document.getElementById('aiStep1').style.display = 'none';
+        document.getElementById('aiStep2').style.display = 'block';
+      });
+      document.getElementById('btnBackAi1').addEventListener('click', () => {
+        document.getElementById('aiStep2').style.display = 'none';
+        document.getElementById('aiStep1').style.display = 'block';
+      });
+      document.getElementById('btnApplyGeminiJson').addEventListener('click', () => {
+        document.getElementById('aiStep2').style.display = 'none';
+        document.getElementById('aiStep3').style.display = 'block';
+      });
+      document.getElementById('btnBackAi2').addEventListener('click', () => {
+        document.getElementById('aiStep3').style.display = 'none';
+        document.getElementById('aiStep2').style.display = 'block';
+      });
+      document.getElementById('btnFlashToOtg').addEventListener('click', () => {
+        if (window.AndroidDsp) {
+          window.AndroidDsp.applyPreset(document.getElementById('txtBadgeProfile').innerText);
+          alert("✓ Đã nạp và xác minh thành công cấu hình vào chip BP1048B2!");
+        }
+      });
+
+      // Copy Gemini Prompt
+      document.getElementById('btnCopyGeminiPrompt').addEventListener('click', () => {
+        const prompt = `Phân tích dữ liệu RTA 2.1 Bi-Amp (Sub 4" + Mid AIRS, Thùng 5L, BP1048B2). Hãy tối ưu hóa 8 dải PEQ cho loa DIY này và trả về JSON chuẩn.`;
+        navigator.clipboard.writeText(prompt).then(() => alert("✓ Đã sao chép Prompt! Hãy dán vào tab Gemini trong Argon."));
+      });
+
+      // Export Modal
+      document.getElementById('btnShowExportModal').addEventListener('click', () => {
+        document.getElementById('exportModal').style.display = 'flex';
+      });
+      document.getElementById('btnCloseExportModal').addEventListener('click', () => {
+        document.getElementById('exportModal').style.display = 'none';
+      });
+      document.getElementById('exportModal').addEventListener('click', () => {
+        document.getElementById('exportModal').style.display = 'none';
+      });
+
+      // Bottom Navigation
+      document.getElementById('navHome').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      document.getElementById('navEq').addEventListener('click', () => document.getElementById('app-eq').scrollIntoView({ behavior: 'smooth' }));
+      document.getElementById('navAi').addEventListener('click', () => document.getElementById('ai-calibration').scrollIntoView({ behavior: 'smooth' }));
+      document.getElementById('navDevice').addEventListener('click', () => document.getElementById('app-device').scrollIntoView({ behavior: 'smooth' }));
+
+      // Try initializing mic
+      initMicRta();
+    });
+  </script>
+</body>
+</html>

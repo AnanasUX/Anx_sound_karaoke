@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xbel>
+<xbel version="3.0">
+    <folder folded="no">
+        <title>EQ_EFFECT_STYLE_CH1_SUB_BOOMBOX</title>
+        <bookmark href="eq_effect_style_name"><title>CH1_SUB_BOOMBOX</title></bookmark>
+        <bookmark href="pre_gain"><title>0.000000</title></bookmark>
+        <bookmark href="preset_filters_size"><title>8</title></bookmark>
+        <folder folded="no">
+            <title>preset_filter[0]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>High Pass</title></bookmark>
+            <bookmark href="dBgain"><title>0.000000</title></bookmark>
+            <bookmark href="f0"><title>55.000000</title></bookmark>
+            <bookmark href="logf0"><title>1.740363</title></bookmark>
+            <bookmark href="Q"><title>0.707100</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[1]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>High Pass</title></bookmark>
+            <bookmark href="dBgain"><title>0.000000</title></bookmark>
+            <bookmark href="f0"><title>55.000000</title></bookmark>
+            <bookmark href="logf0"><title>1.740363</title></bookmark>
+            <bookmark href="Q"><title>0.707100</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[2]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Low Pass</title></bookmark>
+            <bookmark href="dBgain"><title>0.000000</title></bookmark>
+            <bookmark href="f0"><title>350.000000</title></bookmark>
+            <bookmark href="logf0"><title>2.544068</title></bookmark>
+            <bookmark href="Q"><title>0.707100</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[3]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Low Pass</title></bookmark>
+            <bookmark href="dBgain"><title>0.000000</title></bookmark>
+            <bookmark href="f0"><title>350.000000</title></bookmark>
+            <bookmark href="logf0"><title>2.544068</title></bookmark>
+            <bookmark href="Q"><title>0.707100</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[4]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Peaking</title></bookmark>
+            <bookmark href="dBgain"><title>1.500000</title></bookmark>
+            <bookmark href="f0"><title>75.000000</title></bookmark>
+            <bookmark href="logf0"><title>1.875061</title></bookmark>
+            <bookmark href="Q"><title>0.800000</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[5]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Peaking</title></bookmark>
+            <bookmark href="dBgain"><title>1.000000</title></bookmark>
+            <bookmark href="f0"><title>100.000000</title></bookmark>
+            <bookmark href="logf0"><title>2.000000</title></bookmark>
+            <bookmark href="Q"><title>1.000000</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[6]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Peaking</title></bookmark>
+            <bookmark href="dBgain"><title>-1.500000</title></bookmark>
+            <bookmark href="f0"><title>160.000000</title></bookmark>
+            <bookmark href="logf0"><title>2.204120</title></bookmark>
+            <bookmark href="Q"><title>1.000000</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[7]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Peaking</title></bookmark>
+            <bookmark href="dBgain"><title>-1.000000</title></bookmark>
+            <bookmark href="f0"><title>250.000000</title></bookmark>
+            <bookmark href="logf0"><title>2.397940</title></bookmark>
+            <bookmark href="Q"><title>1.000000</title></bookmark>
+        </folder>
+    </folder>
+    <folder folded="no">
+        <title>EQ_EFFECT_STYLE_CH2_MID_TREBLE</title>
+        <bookmark href="eq_effect_style_name"><title>CH2_MID_TREBLE</title></bookmark>
+        <bookmark href="pre_gain"><title>-1.500000</title></bookmark>
+        <bookmark href="preset_filters_size"><title>9</title></bookmark>
+        <folder folded="no">
+            <title>preset_filter[0]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>High Pass</title></bookmark>
+            <bookmark href="dBgain"><title>0.000000</title></bookmark>
+            <bookmark href="f0"><title>350.000000</title></bookmark>
+            <bookmark href="logf0"><title>2.544068</title></bookmark>
+            <bookmark href="Q"><title>0.707100</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[1]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>High Pass</title></bookmark>
+            <bookmark href="dBgain"><title>0.000000</title></bookmark>
+            <bookmark href="f0"><title>350.000000</title></bookmark>
+            <bookmark href="logf0"><title>2.544068</title></bookmark>
+            <bookmark href="Q"><title>0.707100</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[2]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Peaking</title></bookmark>
+            <bookmark href="dBgain"><title>-1.000000</title></bookmark>
+            <bookmark href="f0"><title>500.000000</title></bookmark>
+            <bookmark href="logf0"><title>2.698970</title></bookmark>
+            <bookmark href="Q"><title>1.000000</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[3]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Peaking</title></bookmark>
+            <bookmark href="dBgain"><title>1.000000</title></bookmark>
+            <bookmark href="f0"><title>1200.000000</title></bookmark>
+            <bookmark href="logf0"><title>3.079181</title></bookmark>
+            <bookmark href="Q"><title>0.800000</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[4]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Peaking</title></bookmark>
+            <bookmark href="dBgain"><title>1.000000</title></bookmark>
+            <bookmark href="f0"><title>2500.000000</title></bookmark>
+            <bookmark href="logf0"><title>3.397940</title></bookmark>
+            <bookmark href="Q"><title>0.800000</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[5]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Peaking</title></bookmark>
+            <bookmark href="dBgain"><title>-1.000000</title></bookmark>
+            <bookmark href="f0"><title>5000.000000</title></bookmark>
+            <bookmark href="logf0"><title>3.698970</title></bookmark>
+            <bookmark href="Q"><title>1.000000</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[6]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Peaking</title></bookmark>
+            <bookmark href="dBgain"><title>1.000000</title></bookmark>
+            <bookmark href="f0"><title>8000.000000</title></bookmark>
+            <bookmark href="logf0"><title>3.903090</title></bookmark>
+            <bookmark href="Q"><title>0.800000</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[7]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Peaking</title></bookmark>
+            <bookmark href="dBgain"><title>1.500000</title></bookmark>
+            <bookmark href="f0"><title>12000.000000</title></bookmark>
+            <bookmark href="logf0"><title>4.079181</title></bookmark>
+            <bookmark href="Q"><title>0.800000</title></bookmark>
+        </folder>
+        <folder folded="no">
+            <title>preset_filter[8]</title>
+            <bookmark href="useFlag"><title>true</title></bookmark>
+            <bookmark href="filter_type"><title>Hight Shelf</title></bookmark>
+            <bookmark href="dBgain"><title>1.000000</title></bookmark>
+            <bookmark href="f0"><title>16000.000000</title></bookmark>
+            <bookmark href="logf0"><title>4.204120</title></bookmark>
+            <bookmark href="Q"><title>0.800000</title></bookmark>
+        </folder>
+    </folder>
+</xbel>

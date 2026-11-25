@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>An Sound</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090e;
+      --surface: rgba(18, 23, 32, 0.82);
+      --card: rgba(22, 28, 39, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f1f5f9;
+      --muted: #8b9bb0;
+      --cyan: #00e5ff;
+      --gold: #ffb300;
+      --green: #00e676;
+      --purple: #9d7bff;
+      --red: #ff3b5c;
+    }
+
+    * {
+      box-sizing: border-box !important;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 20% 0%, rgba(0, 229, 255, 0.10) 0%, transparent 45%),
+        radial-gradient(circle at 85% 12%, rgba(255, 179, 0, 0.10) 0%, transparent 45%);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: max(12px, env(safe-area-inset-top)) 14px calc(92px + env(safe-area-inset-bottom));
+      transition: background-image 0.4s ease;
+    }
+
+    body.mic-live {
+      background-image:
+        radial-gradient(circle at 50% 0%, rgba(0, 230, 118, 0.16) 0%, transparent 55%),
+        radial-gradient(circle at 85% 20%, rgba(0, 229, 255, 0.10) 0%, transparent 45%);
+    }
+
+    /* TOPBAR */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--surface);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00e5ff, #0077ff);
+      display: grid;
+      place-items: center;
+      color: #050a12;
+      box-shadow: 0 4px 16px rgba(0, 229, 255, 0.35);
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      color: #fff;
+      line-height: 1.15;
+    }
+
+    .brand-sub {
+      font: 600 9.5px 'JetBrains Mono', monospace;
+      color: var(--cyan);
+      letter-spacing: 0.06em;
+    }
+
+    .route-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px;
+      background: rgba(255, 179, 0, 0.08);
+      border: 1px solid rgba(255, 179, 0, 0.35);
+      border-radius: 99px;
+      font: 700 10px 'JetBrains Mono', monospace;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .route-pill i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+    }
+
+    /* TAB PANELS */
+    .tab-panel {
+      display: none;
+      animation: fadeSlide 0.22s ease-out;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* GLASS CARD */
+    .glass-card {
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .card-title-group h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-badge {
+      font: 700 10px 'JetBrains Mono', monospace;
+      padding: 4px 9px;
+      border-radius: 8px;
+      background: rgba(0, 229, 255, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+    }
+
+    /* HERO MIC BUTTON */
+    .hero-deck {
+      text-align: center;
+      padding: 20px 16px 16px;
+    }
+
+    .mic-power-btn {
+      width: 100%;
+      min-height: 68px;
+      border-radius: 18px;
+      border: 1.5px solid rgba(255, 179, 0, 0.5);
+      background: linear-gradient(135deg, rgba(34, 42, 58, 0.9), rgba(18, 23, 33, 0.95));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 12px 18px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mic-power-btn:active {
+      transform: scale(0.97);
+    }
+
+    .mic-power-btn.active {
+      background: linear-gradient(135deg, rgba(16, 66, 42, 0.95), rgba(10, 38, 25, 0.98)) !important;
+      border-color: var(--green) !important;
+      box-shadow: 0 0 28px rgba(0, 230, 118, 0.35) !important;
+    }
+
+    .mic-circle-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 179, 0, 0.15);
+      color: var(--gold);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: all 0.25s;
+    }
+
+    .mic-power-btn.active .mic-circle-icon {
+      background: rgba(0, 230, 118, 0.22);
+      color: var(--green);
+      box-shadow: 0 0 15px rgba(0, 230, 118, 0.45);
+      animation: micPulse 1.6s infinite;
+    }
+
+    @keyframes micPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    .mic-btn-copy {
+      text-align: left;
+    }
+
+    .mic-btn-copy strong {
+      display: block;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #ffecb3;
+      margin-bottom: 2px;
+    }
+
+    .mic-power-btn.active .mic-btn-copy strong {
+      color: #a7f3d0;
+    }
+
+    .mic-btn-copy small {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .mic-power-btn.active .mic-btn-copy small {
+      color: #6ee7b7;
+    }
+
+    /* SPECTRUM & VU METER */
+    .meter-box {
+      margin-top: 14px;
+      background: rgba(8, 11, 16, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .meter-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .meter-top span {
+      font: 700 10px 'JetBrains Mono', monospace;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .meter-top strong {
+      font: 700 12px 'JetBrains Mono', monospace;
+      color: var(--cyan);
+    }
+
+    .vu-track {
+      width: 100%;
+      height: 10px;
+      background: #141923;
+      border-radius: 99px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vu-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00e676 0%, #ffeb3b 68%, #ff3b5c 100%);
+      border-radius: 99px;
+      transition: width 0.05s ease-out;
+    }
+
+    .vu-peak {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #fff;
+      box-shadow: 0 0 6px #fff;
+      transition: left 0.06s ease-out;
+    }
+
+    #vocalSpectrumCanvas {
+      width: 100%;
+      height: 40px;
+      margin-top: 10px;
+      border-radius: 8px;
+      background: rgba(5, 7, 11, 0.8);
+      display: block;
+    }
+
+    /* RECORDER ROW */
+    .rec-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .btn-rec {
+      flex: 1;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 59, 92, 0.35);
+      background: rgba(255, 59, 92, 0.08);
+      color: #ff99aa;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-rec.recording {
+      background: rgba(255, 59, 92, 0.22);
+      border-color: var(--red);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 59, 92, 0.35);
+    }
+
+    .btn-play-rec {
+      display: none;
+      padding: 11px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 230, 118, 0.4);
+      background: rgba(0, 230, 118, 0.12);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* PRESET GRID */
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+    }
+
+    .preset-tile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      background: rgba(13, 17, 24, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--muted);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.18s;
+    }
+
+    .preset-tile .p-emoji {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .preset-tile strong {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .preset-tile small {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .preset-tile.active {
+      background: linear-gradient(135deg, rgba(255, 179, 0, 0.16), rgba(255, 179, 0, 0.04));
+      border-color: var(--gold);
+      box-shadow: 0 4px 16px rgba(255, 179, 0, 0.18);
+    }
+
+    .preset-tile.active strong {
+      color: #ffecb3;
+    }
+
+    /* MODERN SLIDER */
+    .slider-item {
+      margin-bottom: 14px;
+    }
+    .slider-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .slider-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .slider-label-row span {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    .slider-label-row strong {
+      font: 700 12px 'JetBrains Mono', monospace;
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.08);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    input[type="range"].modern-slider {
+      width: 100%;
+      height: 8px;
+      background: #1e2636;
+      border-radius: 99px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"].modern-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--cyan);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.65);
+      cursor: pointer;
+    }
+
+    input[type="range"].modern-slider.gold::-webkit-slider-thumb {
+      border-color: var(--gold);
+      box-shadow: 0 0 12px rgba(255, 179, 0, 0.65);
+    }
+
+    /* SWITCH TOGGLES */
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+    }
+    .switch-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .switch-text strong {
+      display: block;
+      font-size: 12.5px;
+      color: #e2e8f0;
+    }
+    .switch-text small {
+      display: block;
+      font-size: 10.5px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: #232c3d;
+      border-radius: 99px;
+      transition: 0.25s;
+    }
+
+    .toggle-track::before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
+      background: #94a3b8;
+      border-radius: 50%;
+      transition: 0.25s;
+    }
+
+    .toggle-switch input:checked + .toggle-track {
+      background: rgba(0, 230, 118, 0.35);
+      border: 1px solid var(--green);
+    }
+
+    .toggle-switch input:checked + .toggle-track::before {
+      transform: translateX(20px);
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    /* BEAT PLAYER */
+    .beat-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .btn-pick-file {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 12px;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px dashed rgba(0, 229, 255, 0.4);
+      border-radius: 12px;
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-demo-beat {
+      padding: 11px 14px;
+      background: rgba(157, 123, 255, 0.14);
+      border: 1px solid rgba(157, 123, 255, 0.4);
+      border-radius: 12px;
+      color: #d8c8ff;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-demo-beat.active {
+      background: var(--purple);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(157, 123, 255, 0.5);
+    }
+
+    .player-deck {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(10, 13, 20, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+
+    .btn-play-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #00e5ff, #0088ff);
+      color: #050a12;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .track-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .track-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-time {
+      font: 500 10.5px 'JetBrains Mono', monospace;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* YOUTUBE BOX */
+    .yt-search-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .yt-input {
+      flex: 1;
+      min-width: 0;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(10, 13, 20, 0.85);
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+    .yt-input:focus {
+      border-color: var(--red);
+    }
+
+    .btn-yt-go {
+      padding: 11px 15px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #ff3b5c, #d91b3b);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .yt-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .yt-tag {
+      padding: 6px 11px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* FLOATING BOTTOM TAB BAR */
+    .bottom-dock {
+      position: fixed;
+      left: 14px;
+      right: 14px;
+      bottom: max(10px, env(safe-area-inset-bottom));
+      z-index: 99;
+      background: rgba(14, 18, 26, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 22px;
+      padding: 6px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65);
+    }
+
+    .dock-btn {
+      height: 52px;
+      border: none;
+      border-radius: 16px;
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dock-btn span {
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+
+    .dock-btn.active {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(0, 136, 255, 0.10));
+      color: var(--cyan);
+      box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.35);
+    }
+  </style>
+</head>
+<body>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+      </div>
+      <div>
+        <div class="brand-title">AN SOUND</div>
+        <div class="brand-sub">VANG SỐ DI ĐỘNG PRO</div>
+      </div>
+    </div>
+    <div class="route-pill" id="connStatusPill">
+      <i id="connDot"></i><span id="txtConnStatus">LOA ĐIỆN THOẠI</span>
+    </div>
+  </header>
+
+  <!-- TAB 1: HÁT LIVE (TRANG CHÍNH) -->
+  <section class="tab-panel active" id="tabLive">
+    <div class="glass-card hero-deck">
+      <button class="mic-power-btn" id="btnToggleKaraokeMic" type="button">
+        <div class="mic-circle-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+        </div>
+        <div class="mic-btn-copy">
+          <strong id="btnKaraokeText">BẬT MICRO ĐỂ HÁT</strong>
+          <small id="btnKaraokeSub">Chạm để kích hoạt vang số &amp; chạy nền</small>
+        </div>
+      </button>
+
+      <div class="meter-box">
+        <div class="meter-top">
+          <span>MỨC TÍN HIỆU GIỌNG</span>
+          <strong id="txtVocalDb">-inf dB</strong>
+        </div>
+        <div class="vu-track">
+          <div class="vu-fill" id="vuMeterFill"></div>
+          <div class="vu-peak" id="vuMeterPeak" style="left: 0%;"></div>
+        </div>
+        <canvas id="vocalSpectrumCanvas" width="320" height="40"></canvas>
+      </div>
+
+      <div class="rec-row">
+        <button type="button" class="btn-rec" id="btnToggleRecord">
+          <span id="recDot" style="width:9px;height:9px;border-radius:50%;background:#ff3b5c;display:inline-block;"></span>
+          <span id="txtRecordBtn">GHI ÂM GIỌNG HÁT (.WAV)</span>
+        </button>
+        <a class="btn-play-rec" id="btnPlayRecorded">▶ Nghe lại</a>
+      </div>
+      <audio id="recordedPlaybackEl" controls style="display:none;width:100%;height:36px;margin-top:10px;"></audio>
+    </div>
+
+    <!-- PRESETS 1 CHẠM -->
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <h3>✨ Chọn Nhanh Kiểu Vang</h3>
+        </div>
+        <span class="card-badge">1 CHẠM</span>
+      </div>
+      <div class="preset-grid">
+        <button type="button" class="preset-tile active" data-preset="family">
+          <span class="p-emoji">🎤</span>
+          <div><strong>Gia Đình</strong><small>Vang cân bằng, dễ hát</small></div>
+        </button>
+        <button type="button" class="preset-tile" data-preset="stage">
+          <span class="p-emoji">🌟</span>
+          <div><strong>Sân Khấu</strong><small>Reverb rộng, bay bổng</small></div>
+        </button>
+        <button type="button" class="preset-tile" data-preset="bolero">
+          <span class="p-emoji">🎶</span>
+          <div><strong>Bolero</strong><small>Echo ngân dài, êm ái</small></div>
+        </button>
+        <button type="button" class="preset-tile" data-preset="speech">
+          <span class="p-emoji">📢</span>
+          <div><strong>Nói Rõ (MC)</strong><small>Ít vang, rõ từng chữ</small></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3 THANH CHỈNH NHANH -->
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <h3>🎚️ Chỉnh Nhanh Khi Hát</h3>
+        </div>
+        <span class="card-badge" id="badgeMicGain">115%</span>
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Độ Lớn Micro (Gain)</span>
+          <strong id="valMicGain">115%</strong>
+        </div>
+        <input type="range" class="modern-slider" id="sliderMicGain" min="0" max="400" value="115" step="5">
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Độ Nhại (Echo)</span>
+          <strong id="valEchoMix">15%</strong>
+        </div>
+        <input type="range" class="modern-slider gold" id="sliderEchoMix" min="0" max="100" value="15" step="1">
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Vang Phòng (Reverb)</span>
+          <strong id="valReverbMix">15%</strong>
+        </div>
+        <input type="range" class="modern-slider gold" id="sliderReverbMix" min="0" max="100" value="15" step="1">
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: CHỈNH CHUYÊN SÂU (PRO MIXER) -->
+  <section class="tab-panel" id="tabMixer">
+    <!-- VOCAL 3-BAND EQ & 3D -->
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <h3>🎛️ Âm Sắc Giọng Hát (3-Band EQ)</h3>
+        </div>
+        <span class="card-badge">PRO EQ</span>
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Bass Ấm Giọng (180 Hz)</span>
+          <strong id="valEqBass">+1.5 dB</strong>
+        </div>
+        <input type="range" class="modern-slider" id="sliderEqBass" min="-9" max="9" value="1.5" step="0.5">
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Mid Rõ Lời (1.2 kHz)</span>
+          <strong id="valEqMid">+1.5 dB</strong>
+        </div>
+        <input type="range" class="modern-slider" id="sliderEqMid" min="-9" max="9" value="1.5" step="0.5">
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Treble Sáng Bay (5 kHz)</span>
+          <strong id="valEqTreble">+2.0 dB</strong>
+        </div>
+        <input type="range" class="modern-slider" id="sliderEqTreble" min="-9" max="9" value="2.0" step="0.5">
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Hát Bè Đôi 3D (Stereo Chorus)</span>
+          <strong id="valStereoChorus">20%</strong>
+        </div>
+        <input type="range" class="modern-slider gold" id="sliderStereoChorus" min="0" max="100" value="20" step="5">
+      </div>
+    </div>
+
+    <!-- CHI TIẾT ECHO & REVERB -->
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <h3>🌊 Tinh Chỉnh Vang Chi Tiết</h3>
+        </div>
+        <span class="card-badge">FX DSP</span>
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Thời Gian Trễ Echo (Delay)</span>
+          <strong id="valEchoDelay">180 ms</strong>
+        </div>
+        <input type="range" class="modern-slider gold" id="sliderEchoDelay" min="80" max="400" value="180" step="5">
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Số Lần Lặp Echo (Repeat)</span>
+          <strong id="valEchoFeedback">25%</strong>
+        </div>
+        <input type="range" class="modern-slider gold" id="sliderEchoFeedback" min="0" max="75" value="25" step="1">
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Độ Rộng Phòng (Room Size)</span>
+          <strong id="valReverbSize">2.2 s</strong>
+        </div>
+        <input type="range" class="modern-slider gold" id="sliderReverbSize" min="0.5" max="4.0" value="2.2" step="0.1">
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Giọng Mộc Gốc (Dry Vocal)</span>
+          <strong id="valDryVocal">100%</strong>
+        </div>
+        <input type="range" class="modern-slider" id="sliderDryVocal" min="0" max="100" value="100" step="1">
+      </div>
+    </div>
+
+    <!-- LỌC ỒN & CHỐNG VỌNG -->
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <h3>🛡️ Lọc Tạp Âm &amp; Chống Vọng</h3>
+        </div>
+        <span class="card-badge">SHIELD</span>
+      </div>
+
+      <div class="slider-item" style="margin-bottom: 12px;">
+        <div class="slider-label-row">
+          <span>Chống Ồn Xa / Bắt Mic Gần</span>
+          <strong id="valNearField">55% (Chỉ bắt gần)</strong>
+        </div>
+        <input type="range" class="modern-slider" id="sliderNearField" min="0" max="100" value="55" step="5">
+      </div>
+
+      <label class="switch-row">
+        <div class="switch-text">
+          <strong>Khử vọng loa ngoài (AEC)</strong>
+          <small>Tắt để giảm trễ tối đa như StarMaker; bật nếu loa ngoài bị vọng</small>
+        </div>
+        <span class="toggle-switch"><input type="checkbox" id="chkHwAec"><span class="toggle-track"></span></span>
+      </label>
+
+      <label class="switch-row">
+        <div class="switch-text">
+          <strong>Cắt ù trầm &amp; tiếng gió (Low-Cut 100Hz)</strong>
+          <small>Giúp giọng gọn sạch, không ù nền</small>
+        </div>
+        <span class="toggle-switch"><input type="checkbox" id="chkLowCut" checked><span class="toggle-track"></span></span>
+      </label>
+
+      <label class="switch-row">
+        <div class="switch-text">
+          <strong>Chống hú rít tự động (Notch 2.4kHz)</strong>
+          <small>Ngăn tiếng rít chói tai khi để gần loa</small>
+        </div>
+        <span class="toggle-switch"><input type="checkbox" id="chkAntiHowl" checked><span class="toggle-track"></span></span>
+      </label>
+    </div>
+  </section>
+
+  <!-- TAB 3: NHẠC BEAT & YOUTUBE -->
+  <section class="tab-panel" id="tabMusic">
+    <!-- YOUTUBE KARAOKE -->
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <h3>🎬 Hát Karaoke Trên YouTube</h3>
+        </div>
+        <span class="card-badge" style="color:#ff6b81;border-color:#ff3b5c44;background:#ff3b5c15;">CHẠY NỀN</span>
+      </div>
+      <div class="yt-search-row">
+        <input type="text" class="yt-input" id="txtYtSearch" placeholder="Nhập tên bài hát muốn hát...">
+        <button type="button" class="btn-yt-go" id="btnOpenYtKaraoke">Mở YouTube</button>
+      </div>
+      <div class="yt-tags">
+        <button type="button" class="yt-tag" onclick="quickYt('Karaoke Bolero')">🎶 Bolero</button>
+        <button type="button" class="yt-tag" onclick="quickYt('Karaoke Nhạc Trẻ')">🔥 Nhạc Trẻ</button>
+        <button type="button" class="yt-tag" onclick="quickYt('Karaoke Remix')">⚡ Remix</button>
+        <button type="button" class="yt-tag" onclick="quickYt('Karaoke Trữ Tình')">💛 Trữ Tình</button>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.45;">
+        Mẹo: Bật Micro ở tab <strong>Hát Live</strong> trước, sau đó mở YouTube chọn beat. Ứng dụng sẽ chạy nền để trộn tiếng hát của bạn cùng nhạc YouTube!
+      </p>
+    </div>
+
+    <!-- LOCAL BEAT PLAYER -->
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <h3>🎵 Phát Nhạc Beat Trong Máy</h3>
+        </div>
+        <span class="card-badge" id="badgeBeatStatus">CHỜ BEAT</span>
+      </div>
+
+      <div class="beat-actions">
+        <label class="btn-pick-file" for="karaokeBeatFileInput">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span>Chọn File MP3 / M4A</span>
+          <input type="file" id="karaokeBeatFileInput" accept="audio/*" style="display:none;">
+        </label>
+        <button type="button" class="btn-demo-beat" id="btnPlayDemoBeat">🎵 Beat Mẫu</button>
+      </div>
+
+      <div class="player-deck">
+        <button type="button" class="btn-play-circle" id="btnBeatPlayPause">
+          <svg id="iconBeatPlay" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          <svg id="iconBeatPause" style="display:none;" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="track-meta">
+          <div class="track-title" id="txtBeatTrackName">Chưa chọn bài hát</div>
+          <div class="track-time" id="txtBeatTrackTime">00:00 / 00:00</div>
+        </div>
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Âm Lượng Nhạc Beat</span>
+          <strong id="valBeatVolume">80%</strong>
+        </div>
+        <input type="range" class="modern-slider" id="sliderBeatVolume" min="0" max="100" value="80" step="1">
+      </div>
+
+      <div class="slider-item">
+        <div class="slider-label-row">
+          <span>Bù Trễ Nhạc Bluetooth</span>
+          <strong id="valBeatLatency">0 ms (AUX)</strong>
+        </div>
+        <input type="range" class="modern-slider" id="sliderBeatLatency" min="0" max="350" value="0" step="10">
+      </div>
+
+      <label class="switch-row" style="margin-top: 6px;">
+        <div class="switch-text">
+          <strong>Tự động hạ nhạc khi hát (Ducking)</strong>
+          <small>Nhạc tự nhỏ xuống -6dB khi bạn cất tiếng</small>
+        </div>
+        <span class="toggle-switch"><input type="checkbox" id="chkMusicDucking" checked><span class="toggle-track"></span></span>
+      </label>
+    </div>
+  </section>
+
+  <!-- FLOATING BOTTOM NAVIGATION -->
+  <nav class="bottom-dock">
+    <button type="button" class="dock-btn active" data-tab="tabLive">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+      <span>Hát Live</span>
+    </button>
+    <button type="button" class="dock-btn" data-tab="tabMixer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V14m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6m2-6h6m2 8h6"/></svg>
+      <span>Chỉnh Sâu</span>
+    </button>
+    <button type="button" class="dock-btn" data-tab="tabMusic">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+      <span>Nhạc Beat</span>
+    </button>
+  </nav>
+
+  <audio id="karaokeAudioEl" preload="auto" style="display:none;"></audio>
+
+  <script>
+    function quickYt(q) {
+      const inp = document.getElementById('txtYtSearch');
+      if (inp) inp.value = q.replace('Karaoke ', '');
+      if (window.AndroidDsp && typeof window.AndroidDsp.openYouTubeKaraoke === 'function') {
+        window.AndroidDsp.openYouTubeKaraoke(q.replace('Karaoke ', ''));
+      } else {
+        window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(q), '_blank');
+      }
+    }
+
+    class LiveKaraokeEngine {
+      constructor() {
+        this.ctx = null;
+        this.micStream = null;
+        this.micSource = null;
+        this.hpfNode = null;
+        this.notchNode = null;
+        this.toneNode = null;
+        this.preampGain = null;
+        this.dryGainNode = null;
+        this.echoDelayNode = null;
+        this.echoDampNode = null;
+        this.echoFeedbackGain = null;
+        this.echoWetGain = null;
+        this.reverbConvolver = null;
+        this.reverbWetGain = null;
+        this.vocalBus = null;
+        this.vocalCompressor = null;
+        this.vocalAnalyser = null;
+
+        this.audioEl = document.getElementById('karaokeAudioEl');
+        this.musicSource = null;
+        this.musicGain = null;
+        this.beatDelayNode = null;
+
+        this.demoBeatTimer = null;
+        this.isDemoBeatPlaying = false;
+        this.demoBeatStep = 0;
+        this.masterBus = null;
+
+        this.isActive = false;
+        this.isDucking = true;
+        this.isLowCut = true;
+        this.isAntiHowl = true;
+        this.isHwAec = false;
+        this.isNativeMode = !!(window.AndroidDsp && typeof window.AndroidDsp.startNativeKaraoke === 'function');
+
+        this.params = {
+          micGain: 1.15,
+          tone: 2.0,
+          bassDb: 1.5,
+          midDb: 1.5,
+          trebleDb: 2.0,
+          stereoChorus: 0.20,
+          nearField: 0.55,
+          echoMix: 0.15,
+          echoDelay: 0.18,
+          echoFeedback: 0.25,
+          reverbMix: 0.15,
+          reverbSize: 2.2,
+          dryVocal: 1.00,
+          beatVolume: 0.8,
+          beatLatency: 0.0
+        };
+        this.vuReqId = null;
+      }
+
+      syncNativeParams() {
+        if (window.AndroidDsp && typeof window.AndroidDsp.setKaraokeParams === 'function') {
+          window.AndroidDsp.setKaraokeParams(
+            this.params.micGain,
+            this.params.tone,
+            this.params.echoMix,
+            Math.round(this.params.echoDelay * 1000),
+            this.params.echoFeedback,
+            this.params.reverbMix,
+            this.params.reverbSize,
+            this.params.dryVocal,
+            this.params.nearField,
+            this.isLowCut,
+            this.isAntiHowl,
+            this.isHwAec
+          );
+        }
+        if (window.AndroidDsp && typeof window.AndroidDsp.setKaraokeEqAndFx === 'function') {
+          window.AndroidDsp.setKaraokeEqAndFx(
+            this.params.bassDb,
+            this.params.midDb,
+            this.params.trebleDb,
+            this.params.stereoChorus
+          );
+        }
+      }
+
+      createImpulseResponse(ctx, duration = 2.2, decay = 2.0) {
+        const sampleRate = ctx.sampleRate;
+        const length = Math.floor(sampleRate * Math.max(0.2, duration));
+        const impulse = ctx.createBuffer(2, length, sampleRate);
+        const left = impulse.getChannelData(0);
+        const right = impulse.getChannelData(1);
+        for (let i = 0; i < length; i++) {
+          const env = Math.pow(1 - i / length, decay);
+          left[i] = (Math.random() * 2 - 1) * env;
+          right[i] = (Math.random() * 2 - 1) * env;
+        }
+        return impulse;
+      }
+
+      async start() {
+        if (this.isActive) return;
+        if (this.isNativeMode) {
+          this.syncNativeParams();
+          const ok = window.AndroidDsp.startNativeKaraoke();
+          if (ok) {
+            this.isActive = true;
+            this.updateUiState(true);
+            return true;
+          } else {
+            this.updateUiState(false);
+            return false;
+          }
+        }
+        try {
+          if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: 0 });
+          if (this.ctx.state === 'suspended') await this.ctx.resume();
+          if (!this.micStream) {
+            this.micStream = await navigator.mediaDevices.getUserMedia({
+              audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false, latency: 0 }
+            });
+          }
+          this.buildAudioGraph();
+          this.isActive = true;
+          this.startVuLoop();
+          this.updateUiState(true);
+          return true;
+        } catch (err) {
+          alert("Không thể truy cập Micro: " + (err.message || err));
+          this.updateUiState(false);
+          return false;
+        }
+      }
+
+      buildAudioGraph() {
+        const ctx = this.ctx;
+        this.micSource = ctx.createMediaStreamSource(this.micStream);
+        this.hpfNode = ctx.createBiquadFilter();
+        this.hpfNode.type = 'highpass';
+        this.hpfNode.frequency.value = this.isLowCut ? 100 : 10;
+
+        this.notchNode = ctx.createBiquadFilter();
+        this.notchNode.type = 'notch';
+        this.notchNode.frequency.value = 2400;
+        this.notchNode.Q.value = this.isAntiHowl ? 4.5 : 0.001;
+
+        this.toneNode = ctx.createBiquadFilter();
+        this.toneNode.type = 'highshelf';
+        this.toneNode.frequency.value = 3800;
+        this.toneNode.gain.value = this.params.trebleDb;
+
+        this.preampGain = ctx.createGain();
+        this.preampGain.gain.value = this.params.micGain;
+
+        this.micSource.connect(this.hpfNode);
+        this.hpfNode.connect(this.notchNode);
+        this.notchNode.connect(this.toneNode);
+        this.toneNode.connect(this.preampGain);
+
+        this.vocalBus = ctx.createGain();
+        this.dryGainNode = ctx.createGain();
+        this.dryGainNode.gain.value = this.params.dryVocal;
+        this.preampGain.connect(this.dryGainNode);
+        this.dryGainNode.connect(this.vocalBus);
+
+        this.echoDelayNode = ctx.createDelay(1.0);
+        this.echoDelayNode.delayTime.value = this.params.echoDelay;
+        this.echoDampNode = ctx.createBiquadFilter();
+        this.echoDampNode.type = 'lowpass';
+        this.echoDampNode.frequency.value = 3500;
+        this.echoFeedbackGain = ctx.createGain();
+        this.echoFeedbackGain.gain.value = this.params.echoFeedback;
+        this.echoWetGain = ctx.createGain();
+        this.echoWetGain.gain.value = this.params.echoMix;
+
+        this.preampGain.connect(this.echoDelayNode);
+        this.echoDelayNode.connect(this.echoDampNode);
+        this.echoDampNode.connect(this.echoFeedbackGain);
+        this.echoFeedbackGain.connect(this.echoDelayNode);
+        this.echoDelayNode.connect(this.echoWetGain);
+        this.echoWetGain.connect(this.vocalBus);
+
+        this.reverbConvolver = ctx.createConvolver();
+        this.reverbConvolver.buffer = this.createImpulseResponse(ctx, this.params.reverbSize, 2.2);
+        this.reverbWetGain = ctx.createGain();
+        this.reverbWetGain.gain.value = this.params.reverbMix;
+        this.preampGain.connect(this.reverbConvolver);
+        this.reverbConvolver.connect(this.reverbWetGain);
+        this.reverbWetGain.connect(this.vocalBus);
+
+        this.vocalCompressor = ctx.createDynamicsCompressor();
+        this.vocalCompressor.threshold.value = -6;
+        this.vocalCompressor.ratio.value = 6;
+        this.vocalBus.connect(this.vocalCompressor);
+
+        this.vocalAnalyser = ctx.createAnalyser();
+        this.vocalAnalyser.fftSize = 256;
+        this.vocalCompressor.connect(this.vocalAnalyser);
+
+        this.masterBus = ctx.createGain();
+        this.vocalCompressor.connect(this.masterBus);
+
+        if (!this.musicSource && this.audioEl) {
+          try { this.musicSource = ctx.createMediaElementSource(this.audioEl); } catch(e) {}
+        }
+        if (!this.musicGain) {
+          this.musicGain = ctx.createGain();
+          this.musicGain.gain.value = this.params.beatVolume;
+        }
+        this.beatDelayNode = ctx.createDelay(1.0);
+        this.beatDelayNode.delayTime.value = this.params.beatLatency || 0.0;
+        if (this.musicSource) {
+          try { this.musicSource.connect(this.musicGain); } catch(e) {}
+        }
+        this.musicGain.connect(this.beatDelayNode);
+        this.beatDelayNode.connect(this.masterBus);
+        this.masterBus.connect(ctx.destination);
+      }
+
+      stop() {
+        if (!this.isActive) return;
+        this.isActive = false;
+        if (this.isNativeMode && window.AndroidDsp && typeof window.AndroidDsp.stopNativeKaraoke === 'function') {
+          window.AndroidDsp.stopNativeKaraoke();
+        }
+        if (this.vuReqId) {
+          cancelAnimationFrame(this.vuReqId);
+          this.vuReqId = null;
+        }
+        try {
+          if (this.micSource) this.micSource.disconnect();
+          if (this.masterBus) this.masterBus.disconnect();
+        } catch(e) {}
+        this.updateUiState(false);
+      }
+
+      startVuLoop() {
+        const timeData = new Uint8Array(this.vocalAnalyser.frequencyBinCount);
+        const update = () => {
+          if (!this.isActive || !this.vocalAnalyser) return;
+          this.vocalAnalyser.getByteTimeDomainData(timeData);
+          let sumSq = 0;
+          for (let i = 0; i < timeData.length; i++) {
+            const s = (timeData[i] - 128) / 128;
+            sumSq += s * s;
+          }
+          const rms = Math.sqrt(sumSq / timeData.length);
+          const db = rms > 0.0001 ? 20 * Math.log10(rms) : -80;
+          if (window.onNativeVocalMeter) window.onNativeVocalMeter(db);
+          this.vuReqId = requestAnimationFrame(update);
+        };
+        this.vuReqId = requestAnimationFrame(update);
+      }
+
+      updateUiState(active) {
+        const btn = document.getElementById('btnToggleKaraokeMic');
+        const txtBtn = document.getElementById('btnKaraokeText');
+        const subBtn = document.getElementById('btnKaraokeSub');
+        const fillEl = document.getElementById('vuMeterFill');
+        const dbEl = document.getElementById('txtVocalDb');
+        document.body.classList.toggle('mic-live', active);
+
+        if (active) {
+          if (btn) btn.classList.add('active');
+          if (txtBtn) txtBtn.innerText = 'ĐANG BẬT MICRO (CHẠM ĐỂ TẮT)';
+          if (subBtn) subBtn.innerText = 'Vang số đang hoạt động & hỗ trợ chạy nền';
+        } else {
+          if (btn) btn.classList.remove('active');
+          if (txtBtn) txtBtn.innerText = 'BẬT MICRO ĐỂ HÁT';
+          if (subBtn) subBtn.innerText = 'Chạm để kích hoạt vang số & chạy nền';
+          if (fillEl) fillEl.style.width = '0%';
+          if (dbEl) dbEl.innerText = '-inf dB';
+        }
+      }
+
+      applyPreset(presetName) {
+        const presets = {
+          family: {
+            micGain: 1.15, bassDb: 1.5, midDb: 1.5, trebleDb: 2.0, stereoChorus: 0.20,
+            echoMix: 0.22, echoDelay: 0.19, echoFeedback: 0.30,
+            reverbMix: 0.18, reverbSize: 2.2, dryVocal: 1.0,
+            lowCut: true, antiHowl: true, ducking: true
+          },
+          stage: {
+            micGain: 1.15, bassDb: 1.0, midDb: 2.0, trebleDb: 3.5, stereoChorus: 0.45,
+            echoMix: 0.18, echoDelay: 0.16, echoFeedback: 0.25,
+            reverbMix: 0.45, reverbSize: 3.2, dryVocal: 1.0,
+            lowCut: true, antiHowl: true, ducking: true
+          },
+          bolero: {
+            micGain: 1.25, bassDb: 2.5, midDb: 1.0, trebleDb: 1.5, stereoChorus: 0.25,
+            echoMix: 0.42, echoDelay: 0.24, echoFeedback: 0.45,
+            reverbMix: 0.20, reverbSize: 1.8, dryVocal: 1.0,
+            lowCut: true, antiHowl: true, ducking: true
+          },
+          speech: {
+            micGain: 1.30, bassDb: 0.0, midDb: 3.0, trebleDb: 2.5, stereoChorus: 0.0,
+            echoMix: 0.0, echoDelay: 0.10, echoFeedback: 0.0,
+            reverbMix: 0.05, reverbSize: 0.8, dryVocal: 1.0,
+            lowCut: true, antiHowl: true, ducking: true
+          }
+        };
+
+        const p = presets[presetName] || presets.family;
+        Object.assign(this.params, {
+          micGain: p.micGain, bassDb: p.bassDb, midDb: p.midDb, trebleDb: p.trebleDb,
+          stereoChorus: p.stereoChorus, echoMix: p.echoMix, echoDelay: p.echoDelay,
+          echoFeedback: p.echoFeedback, reverbMix: p.reverbMix, reverbSize: p.reverbSize,
+          dryVocal: p.dryVocal
+        });
+        this.isLowCut = p.lowCut;
+        this.isAntiHowl = p.antiHowl;
+        this.isDucking = p.ducking;
+
+        if (!this.isNativeMode && this.isActive && this.ctx) {
+          if (this.preampGain) this.preampGain.gain.setTargetAtTime(p.micGain, this.ctx.currentTime, 0.05);
+          if (this.echoDelayNode) this.echoDelayNode.delayTime.setTargetAtTime(p.echoDelay, this.ctx.currentTime, 0.05);
+          if (this.echoFeedbackGain) this.echoFeedbackGain.gain.setTargetAtTime(p.echoFeedback, this.ctx.currentTime, 0.05);
+          if (this.echoWetGain) this.echoWetGain.gain.setTargetAtTime(p.echoMix, this.ctx.currentTime, 0.05);
+          if (this.reverbWetGain) this.reverbWetGain.gain.setTargetAtTime(p.reverbMix, this.ctx.currentTime, 0.05);
+          if (this.dryGainNode) this.dryGainNode.gain.setTargetAtTime(p.dryVocal, this.ctx.currentTime, 0.05);
+        }
+
+        const setVal = (id, v) => { const e = document.getElementById(id); if (e) e.value = v; };
+        const setTxt = (id, t) => { const e = document.getElementById(id); if (e) e.innerText = t; };
+        const fmtDb = v => (v > 0 ? '+' : '') + v.toFixed(1) + ' dB';
+
+        setVal('sliderMicGain', Math.round(p.micGain * 100));
+        setTxt('valMicGain', Math.round(p.micGain * 100) + '%');
+        setTxt('badgeMicGain', Math.round(p.micGain * 100) + '%');
+
+        setVal('sliderEchoMix', Math.round(p.echoMix * 100));
+        setTxt('valEchoMix', Math.round(p.echoMix * 100) + '%');
+        setVal('sliderEchoDelay', Math.round(p.echoDelay * 1000));
+        setTxt('valEchoDelay', Math.round(p.echoDelay * 1000) + ' ms');
+        setVal('sliderEchoFeedback', Math.round(p.echoFeedback * 100));
+        setTxt('valEchoFeedback', Math.round(p.echoFeedback * 100) + '%');
+
+        setVal('sliderReverbMix', Math.round(p.reverbMix * 100));
+        setTxt('valReverbMix', Math.round(p.reverbMix * 100) + '%');
+        setVal('sliderReverbSize', p.reverbSize);
+        setTxt('valReverbSize', p.reverbSize.toFixed(1) + ' s');
+        setVal('sliderDryVocal', Math.round(p.dryVocal * 100));
+        setTxt('valDryVocal', Math.round(p.dryVocal * 100) + '%');
+
+        setVal('sliderEqBass', p.bassDb); setTxt('valEqBass', fmtDb(p.bassDb));
+        setVal('sliderEqMid', p.midDb); setTxt('valEqMid', fmtDb(p.midDb));
+        setVal('sliderEqTreble', p.trebleDb); setTxt('valEqTreble', fmtDb(p.trebleDb));
+        setVal('sliderStereoChorus', Math.round(p.stereoChorus * 100));
+        setTxt('valStereoChorus', Math.round(p.stereoChorus * 100) + '%');
+
+        const cLow = document.getElementById('chkLowCut'); if (cLow) cLow.checked = p.lowCut;
+        const cHowl = document.getElementById('chkAntiHowl'); if (cHowl) cHowl.checked = p.antiHowl;
+        const cDuck = document.getElementById('chkMusicDucking'); if (cDuck) cDuck.checked = p.ducking;
+
+        this.syncNativeParams();
+      }
+
+      toggleDemoBeat() {
+        if (this.isDemoBeatPlaying) this.stopDemoBeat();
+        else this.startDemoBeat();
+      }
+
+      startDemoBeat() {
+        if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: 'interactive' });
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        if (!this.musicGain) {
+          this.musicGain = this.ctx.createGain();
+          this.musicGain.gain.value = this.params.beatVolume;
+          this.musicGain.connect(this.masterBus || this.ctx.destination);
+        }
+        this.isDemoBeatPlaying = true;
+        this.demoBeatStep = 0;
+        const btn = document.getElementById('btnPlayDemoBeat');
+        if (btn) btn.classList.add('active');
+        const txtName = document.getElementById('txtBeatTrackName');
+        if (txtName) txtName.innerText = '🎵 Beat Demo Acoustic 78 BPM';
+
+        const stepDuration = (60 / 78) / 4;
+        const chords = [
+          [220, 261.63, 329.63, 392],
+          [174.61, 220, 261.63, 329.63],
+          [130.81, 164.81, 196, 246.94],
+          [196, 246.94, 293.66, 392]
+        ];
+        const tick = () => {
+          if (!this.isDemoBeatPlaying) return;
+          const ctx = this.ctx, now = ctx.currentTime;
+          const step16 = this.demoBeatStep % 16;
+          const bar = Math.floor(this.demoBeatStep / 16) % 4;
+
+          if (step16 === 0 || step16 === 8 || step16 === 10) {
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.frequency.setValueAtTime(110, now); o.frequency.exponentialRampToValueAtTime(45, now + 0.12);
+            g.gain.setValueAtTime(0.7, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+            o.connect(g); g.connect(this.musicGain); o.start(now); o.stop(now + 0.2);
+          }
+          if (step16 === 4 || step16 === 12) {
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.type = 'triangle'; o.frequency.setValueAtTime(190, now);
+            g.gain.setValueAtTime(0.4, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+            o.connect(g); g.connect(this.musicGain); o.start(now); o.stop(now + 0.15);
+          }
+          if (step16 % 2 === 0) {
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.type = 'square'; o.frequency.setValueAtTime(6500, now);
+            g.gain.setValueAtTime(0.08, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+            o.connect(g); g.connect(this.musicGain); o.start(now); o.stop(now + 0.05);
+          }
+          if (step16 === 0 || step16 === 6 || step16 === 12) {
+            chords[bar].forEach((freq, idx) => {
+              const co = ctx.createOscillator(), cg = ctx.createGain();
+              co.type = 'sine'; co.frequency.setValueAtTime(freq, now + idx * 0.015);
+              cg.gain.setValueAtTime(0.08, now + idx * 0.015); cg.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+              co.connect(cg); cg.connect(this.musicGain); co.start(now + idx * 0.015); co.stop(now + 0.5);
+            });
+          }
+          this.demoBeatStep++;
+          this.demoBeatTimer = setTimeout(tick, stepDuration * 1000);
+        };
+        tick();
+      }
+
+      stopDemoBeat() {
+        this.isDemoBeatPlaying = false;
+        if (this.demoBeatTimer) { clearTimeout(this.demoBeatTimer); this.demoBeatTimer = null; }
+        const btn = document.getElementById('btnPlayDemoBeat');
+        if (btn) btn.classList.remove('active');
+        const txtName = document.getElementById('txtBeatTrackName');
+        if (txtName) txtName.innerText = 'Đã dừng Beat Demo';
+      }
+    }
+
+    const engine = new LiveKaraokeEngine();
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Bottom Dock Tabs
+      document.querySelectorAll('.dock-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const targetId = this.getAttribute('data-tab');
+          document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+          const panel = document.getElementById(targetId);
+          if (panel) panel.classList.add('active');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+
+      // Power Button
+      document.getElementById('btnToggleKaraokeMic').addEventListener('click', () => {
+        if (engine.isActive) engine.stop();
+        else engine.start();
+      });
+
+      // Presets
+      document.querySelectorAll('.preset-tile').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.preset-tile').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          engine.applyPreset(this.getAttribute('data-preset'));
+        });
+      });
+
+      // Sliders Binding Helper
+      const bindSlider = (id, labelId, onVal) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('input', function() {
+          const v = parseFloat(this.value);
+          const lbl = document.getElementById(labelId);
+          onVal(v, lbl);
+        });
+      };
+
+      bindSlider('sliderMicGain', 'valMicGain', (v, lbl) => {
+        engine.params.micGain = v / 100;
+        engine.syncNativeParams();
+        if (lbl) lbl.innerText = v + '%';
+        const b = document.getElementById('badgeMicGain');
+        if (b) b.innerText = v + '%';
+        if (engine.isActive && engine.preampGain && engine.ctx) engine.preampGain.gain.setTargetAtTime(v / 100, engine.ctx.currentTime, 0.03);
+      });
+
+      bindSlider('sliderEchoMix', 'valEchoMix', (v, lbl) => {
+        engine.params.echoMix = v / 100;
+        engine.syncNativeParams();
+        if (lbl) lbl.innerText = v + '%';
+        if (engine.isActive && engine.echoWetGain && engine.ctx) engine.echoWetGain.gain.setTargetAtTime(v / 100, engine.ctx.currentTime, 0.03);
+      });
+
+      bindSlider('sliderEchoDelay', 'valEchoDelay', (v, lbl) => {
+        engine.params.echoDelay = v / 1000;
+        engine.syncNativeParams();
+        if (lbl) lbl.innerText = v + ' ms';
+        if (engine.isActive && engine.echoDelayNode && engine.ctx) engine.echoDelayNode.delayTime.setTargetAtTime(v / 1000, engine.ctx.currentTime, 0.05);
+      });
+
+      bindSlider('sliderEchoFeedback', 'valEchoFeedback', (v, lbl) => {
+        engine.params.echoFeedback = v / 100;
+        engine.syncNativeParams();
+        if (lbl) lbl.innerText = v + '%';
+        if (engine.isActive && engine.echoFeedbackGain && engine.ctx) engine.echoFeedbackGain.gain.setTargetAtTime(v / 100, engine.ctx.currentTime, 0.03);
+      });
+
+      bindSlider('sliderReverbMix', 'valReverbMix', (v, lbl) => {
+        engine.params.reverbMix = v / 100;
+        engine.syncNativeParams();
+        if (lbl) lbl.innerText = v + '%';
+        if (engine.isActive && engine.reverbWetGain && engine.ctx) engine.reverbWetGain.gain.setTargetAtTime(v / 100, engine.ctx.currentTime, 0.03);
+      });
+
+      bindSlider('sliderReverbSize', 'valReverbSize', (v, lbl) => {
+        engine.params.reverbSize = v;
+        engine.syncNativeParams();
+        if (lbl) lbl.innerText = v.toFixed(1) + ' s';
+        if (engine.isActive && engine.reverbConvolver && engine.ctx) engine.reverbConvolver.buffer = engine.createImpulseResponse(engine.ctx, v, 2.2);
+      });
+
+      bindSlider('sliderDryVocal', 'valDryVocal', (v, lbl) => {
+        engine.params.dryVocal = v / 100;
+        engine.syncNativeParams();
+        if (lbl) lbl.innerText = v + '%';
+        if (engine.isActive && engine.dryGainNode && engine.ctx) engine.dryGainNode.gain.setTargetAtTime(v / 100, engine.ctx.currentTime, 0.03);
+      });
+
+      bindSlider('sliderEqBass', 'valEqBass', (v, lbl) => {
+        engine.params.bassDb = v; engine.syncNativeParams();
+        if (lbl) lbl.innerText = (v > 0 ? '+' : '') + v.toFixed(1) + ' dB';
+      });
+      bindSlider('sliderEqMid', 'valEqMid', (v, lbl) => {
+        engine.params.midDb = v; engine.syncNativeParams();
+        if (lbl) lbl.innerText = (v > 0 ? '+' : '') + v.toFixed(1) + ' dB';
+      });
+      bindSlider('sliderEqTreble', 'valEqTreble', (v, lbl) => {
+        engine.params.trebleDb = v; engine.syncNativeParams();
+        if (lbl) lbl.innerText = (v > 0 ? '+' : '') + v.toFixed(1) + ' dB';
+      });
+      bindSlider('sliderStereoChorus', 'valStereoChorus', (v, lbl) => {
+        engine.params.stereoChorus = v / 100; engine.syncNativeParams();
+        if (lbl) lbl.innerText = v + '%';
+      });
+
+      bindSlider('sliderNearField', 'valNearField', (v, lbl) => {
+        engine.params.nearField = v / 100;
+        engine.syncNativeParams();
+        let txt = v + '%';
+        if (v >= 70) txt += ' (Cực gần 5cm)';
+        else if (v >= 40) txt += ' (Chỉ bắt gần)';
+        else if (v === 0) txt += ' (Thu tất cả)';
+        if (lbl) lbl.innerText = txt;
+      });
+
+      bindSlider('sliderBeatVolume', 'valBeatVolume', (v, lbl) => {
+        engine.params.beatVolume = v / 100;
+        if (lbl) lbl.innerText = v + '%';
+        if (engine.musicGain && engine.ctx) engine.musicGain.gain.setTargetAtTime(v / 100, engine.ctx.currentTime, 0.03);
+      });
+
+      bindSlider('sliderBeatLatency', 'valBeatLatency', (v, lbl) => {
+        engine.params.beatLatency = v / 1000;
+        if (lbl) lbl.innerText = v === 0 ? '0 ms (AUX)' : v + ' ms (Bluetooth)';
+        if (engine.beatDelayNode && engine.ctx) engine.beatDelayNode.delayTime.setTargetAtTime(v / 1000, engine.ctx.currentTime, 0.03);
+      });
+
+      // Toggles
+      document.getElementById('chkHwAec').addEventListener('change', function() { engine.isHwAec = this.checked; engine.syncNativeParams(); });
+      document.getElementById('chkLowCut').addEventListener('change', function() { engine.isLowCut = this.checked; engine.syncNativeParams(); });
+      document.getElementById('chkAntiHowl').addEventListener('change', function() { engine.isAntiHowl = this.checked; engine.syncNativeParams(); });
+      document.getElementById('chkMusicDucking').addEventListener('change', function() { engine.isDucking = this.checked; });
+
+      // Beat Player
+      document.getElementById('karaokeBeatFileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          if (engine.isDemoBeatPlaying) engine.stopDemoBeat();
+          const audioEl = document.getElementById('karaokeAudioEl');
+          audioEl.src = URL.createObjectURL(file);
+          audioEl.play().catch(() => {});
+          document.getElementById('txtBeatTrackName').innerText = file.name;
+          document.getElementById('badgeBeatStatus').innerText = 'ĐANG PHÁT';
+          document.getElementById('iconBeatPlay').style.display = 'none';
+          document.getElementById('iconBeatPause').style.display = 'block';
+        }
+      });
+
+      document.getElementById('btnPlayDemoBeat').addEventListener('click', () => {
+        const audioEl = document.getElementById('karaokeAudioEl');
+        if (audioEl) audioEl.pause();
+        engine.toggleDemoBeat();
+        document.getElementById('badgeBeatStatus').innerText = engine.isDemoBeatPlaying ? 'DEMO LIVE' : 'DỪNG';
+        document.getElementById('iconBeatPlay').style.display = engine.isDemoBeatPlaying ? 'none' : 'block';
+        document.getElementById('iconBeatPause').style.display = engine.isDemoBeatPlaying ? 'block' : 'none';
+      });
+
+      document.getElementById('btnBeatPlayPause').addEventListener('click', () => {
+        const audioEl = document.getElementById('karaokeAudioEl');
+        if (engine.isDemoBeatPlaying) {
+          engine.stopDemoBeat();
+          document.getElementById('iconBeatPlay').style.display = 'block';
+          document.getElementById('iconBeatPause').style.display = 'none';
+          return;
+        }
+        if (audioEl && audioEl.src) {
+          if (audioEl.paused) {
+            audioEl.play();
+            document.getElementById('iconBeatPlay').style.display = 'none';
+            document.getElementById('iconBeatPause').style.display = 'block';
+            document.getElementById('badgeBeatStatus').innerText = 'ĐANG PHÁT';
+          } else {
+            audioEl.pause();
+            document.getElementById('iconBeatPlay').style.display = 'block';
+            document.getElementById('iconBeatPause').style.display = 'none';
+            document.getElementById('badgeBeatStatus').innerText = 'TẠM DỪNG';
+          }
+        } else {
+          engine.toggleDemoBeat();
+          document.getElementById('iconBeatPlay').style.display = engine.isDemoBeatPlaying ? 'none' : 'block';
+          document.getElementById('iconBeatPause').style.display = engine.isDemoBeatPlaying ? 'block' : 'none';
+        }
+      });
+
+      document.getElementById('karaokeAudioEl').addEventListener('timeupdate', function() {
+        const fmt = s => { const m = Math.floor(s/60), sec = Math.floor(s%60); return (m<10?'0':'')+m+':'+(sec<10?'0':'')+sec; };
+        document.getElementById('txtBeatTrackTime').innerText = fmt(this.currentTime||0) + ' / ' + fmt(this.duration||0);
+      });
+
+      // Audio Route Callback
+      window.onAudioRouteChanged = function(isBt) {
+        const txt = document.getElementById('txtConnStatus');
+        const pill = document.getElementById('connStatusPill');
+        const dot = document.getElementById('connDot');
+        if (isBt) {
+          if (txt) txt.innerText = 'LOA BLUETOOTH';
+          if (pill) { pill.style.borderColor = '#00e676'; pill.style.color = '#00e676'; pill.style.background = 'rgba(0,230,118,0.1)'; }
+          if (dot) { dot.style.background = '#00e676'; dot.style.boxShadow = '0 0 8px #00e676'; }
+        } else {
+          if (txt) txt.innerText = 'LOA ĐIỆN THOẠI';
+          if (pill) { pill.style.borderColor = 'rgba(255,179,0,0.35)'; pill.style.color = '#ffb300'; pill.style.background = 'rgba(255,179,0,0.08)'; }
+          if (dot) { dot.style.background = '#ffb300'; dot.style.boxShadow = '0 0 8px #ffb300'; }
+        }
+      };
+      if (window.AndroidDsp && typeof window.AndroidDsp.isBluetoothOutputConnected === 'function') {
+        window.onAudioRouteChanged(window.AndroidDsp.isBluetoothOutputConnected());
+      }
+
+      // Spectrum Visualizer & Meter
+      const specCanvas = document.getElementById('vocalSpectrumCanvas');
+      const specCtx = specCanvas ? specCanvas.getContext('2d') : null;
+      const specBars = new Array(24).fill(2);
+      function drawSpectrum(pct) {
+        if (!specCtx || !specCanvas) return;
+        const w = specCanvas.width, h = specCanvas.height;
+        specCtx.clearRect(0, 0, w, h);
+        const barW = (w - 23 * 3) / 24;
+        for (let i = 0; i < 24; i++) {
+          const shape = Math.sin((i / 23) * Math.PI) * 0.75 + 0.25;
+          const target = Math.max(3, (pct / 100) * h * shape * (0.7 + Math.random() * 0.5));
+          specBars[i] = specBars[i] * 0.6 + target * 0.4;
+          const bh = Math.min(h - 2, specBars[i]);
+          const grad = specCtx.createLinearGradient(0, h, 0, 0);
+          grad.addColorStop(0, '#00e5ff');
+          grad.addColorStop(0.6, '#ffb300');
+          grad.addColorStop(1, '#ff3b5c');
+          specCtx.fillStyle = grad;
+          specCtx.fillRect(i * (barW + 3), h - bh, barW, bh);
+        }
+      }
+
+      let nativePeakHold = 0;
+      window.onNativeVocalMeter = function(db) {
+        if (!engine.isActive) return;
+        const pct = Math.max(0, Math.min(100, ((db + 40) / 40) * 100));
+        document.getElementById('vuMeterFill').style.width = pct.toFixed(1) + '%';
+        if (pct > nativePeakHold) nativePeakHold = pct;
+        else nativePeakHold = Math.max(0, nativePeakHold - 2.5);
+        document.getElementById('vuMeterPeak').style.left = nativePeakHold.toFixed(1) + '%';
+        document.getElementById('txtVocalDb').innerText = db > -75 ? (db.toFixed(1) + ' dB') : '-inf dB';
+        drawSpectrum(pct);
+
+        if (engine.isDucking && engine.musicGain && engine.ctx) {
+          const isSinging = db > -28;
+          engine.musicGain.gain.setTargetAtTime(isSinging ? (engine.params.beatVolume * 0.45) : engine.params.beatVolume, engine.ctx.currentTime, 0.08);
+        }
+      };
+
+      // Live WAV Recorder
+      let isRecording = false;
+      const btnRec = document.getElementById('btnToggleRecord');
+      const txtRec = document.getElementById('txtRecordBtn');
+      const btnPlayRec = document.getElementById('btnPlayRecorded');
+      const recPlayer = document.getElementById('recordedPlaybackEl');
+      btnRec.addEventListener('click', () => {
+        if (!window.AndroidDsp || typeof window.AndroidDsp.startWavRecording !== 'function') {
+          alert('Tính năng ghi âm WAV chỉ hoạt động trên ứng dụng Android!');
+          return;
+        }
+        if (!isRecording) {
+          if (!engine.isActive) { alert('Vui lòng bấm BẬT MICRO trước khi ghi âm!'); return; }
+          if (window.AndroidDsp.startWavRecording()) {
+            isRecording = true;
+            btnRec.classList.add('recording');
+            txtRec.innerText = '⏹ ĐANG GHI ÂM - CHẠM ĐỂ DỪNG';
+            btnPlayRec.style.display = 'none';
+            recPlayer.style.display = 'none';
+          }
+        } else {
+          const savedUri = window.AndroidDsp.stopWavRecording();
+          isRecording = false;
+          btnRec.classList.remove('recording');
+          txtRec.innerText = 'GHI ÂM GIỌNG HÁT (.WAV)';
+          if (savedUri) {
+            recPlayer.src = savedUri;
+            recPlayer.style.display = 'block';
+            btnPlayRec.style.display = 'inline-block';
+            btnPlayRec.onclick = () => recPlayer.play();
+          }
+        }
+      });
+
+      // YouTube Search
+      document.getElementById('btnOpenYtKaraoke').addEventListener('click', () => {
+        const q = document.getElementById('txtYtSearch')?.value || '';
+        if (window.AndroidDsp && typeof window.AndroidDsp.openYouTubeKaraoke === 'function') {
+          window.AndroidDsp.openYouTubeKaraoke(q);
+        } else {
+          window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent((q || 'nhac') + ' karaoke'), '_blank');
+        }
+      });
+
+      window.onNativeKaraokeStopped = function() {
+        engine.isActive = false;
+        engine.updateUiState(false);
+      };
+
+      if (window.AndroidDsp && typeof window.AndroidDsp.isNativeKaraokeRunning === 'function') {
+        if (window.AndroidDsp.isNativeKaraokeRunning()) {
+          engine.isActive = true;
+          engine.updateUiState(true);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

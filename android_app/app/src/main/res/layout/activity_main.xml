@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_main">
+
+    <!-- TOP MODE SWITCHER TABS -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#16181D"
+        android:padding="6dp">
+
+        <Button
+            android:id="@+id/btnTabQuick"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🎛️ ĐIỀU KHIỂN NHANH"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="11sp"
+            android:backgroundTint="@color/bg_card"
+            android:layout_marginEnd="3dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnTabStudio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🔬 STUDIO PEQ &amp; RTA"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="11sp"
+            android:backgroundTint="@color/accent_blue"
+            android:layout_marginStart="3dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:id="@+id/scrollViewQuick"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:fillViewport="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- HEADER -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BEST SOUND T1V2"
+                android:textColor="@color/accent_gold"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DSP Controller (Bluetooth Wireless &amp; USB OTG)"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- DUAL CONNECTION BUTTONS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnConnectBt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="⚡ KẾT NỐI BLUETOOTH"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/accent_blue"
+                    android:layout_marginEnd="4dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp" />
+
+                <Button
+                    android:id="@+id/btnConnect"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="🔌 CÁP USB OTG"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="@color/accent_orange"
+                    android:layout_marginStart="4dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- STATUS CARD -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_card"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp">
+
+            <View
+                android:id="@+id/viewStatusDot"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="@color/status_red"
+                android:layout_marginRight="10dp" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Chưa kết nối tới Loa (Chọn Bluetooth hoặc USB)"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- PRESETS SECTION -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CẤU HÌNH NHANH (1 CHẠM)"
+            android:textColor="@color/accent_gold"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnPresetBO8Ohm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="⭐ B&amp;O 8-OHM 24V (Bass Đầm - Treble Sáng - Vocal Ngọt)"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="@color/bg_card_highlight"
+                android:gravity="left|center_vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/btnPresetBoombox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="💥 JBL BOOMBOX (Kick Căng Tức Ngực - EDM/Remix)"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="@color/bg_card"
+                android:gravity="left|center_vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/btnPresetVocal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🎙️ SWEET VOCAL (Acoustic - Bolero - Nhạc Vàng)"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="@color/bg_card"
+                android:gravity="left|center_vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/btnPresetOriginal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🔄 KHÔI PHỤC CẤU HÌNH GỐC (Original Reset)"
+                android:textColor="@color/text_secondary"
+                android:backgroundTint="@color/bg_card"
+                android:gravity="left|center_vertical"
+                android:padding="12dp" />
+        </LinearLayout>
+
+        <!-- REALTIME CONTROLS SECTION -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ĐIỀU CHỈNH TRỰC TIẾP THỜI GIAN THỰC"
+            android:textColor="@color/accent_gold"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <!-- SUB BASS SLIDER -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_card"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cường độ Sub Bass (Củ B&amp;O 8Ω)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tvBassVal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+4.9 dB (7200)"
+                    android:textColor="@color/accent_orange"
+                    android:textStyle="bold"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/sbBass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10000"
+                android:progress="7200"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <!-- TREBLE SLIDER -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_card"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Độ sáng Treble Dome (Tép Leng Keng)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tvTrebleVal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+5.8 dB (8000)"
+                    android:textColor="@color/accent_gold"
+                    android:textStyle="bold"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/sbTreble"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10000"
+                android:progress="8000"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <!-- MVBASS SLIDER -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_card"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="MVBass Classic (Trầm Ảo 58Hz)"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tvMVBassVal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="28%"
+                    android:textColor="@color/status_green"
+                    android:textStyle="bold"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/sbMVBass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="28"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <!-- MULTI-BAND FREQUENCY TUNER (REAL-TIME FREQ PUSH) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🎛️ CĂN CHỈNH CHI TIẾT CÁC DẢI TẦN SỐ (PEQ TUNER)"
+                android:textColor="@color/accent_gold"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đẩy trực tiếp các tần số xuống chip DSP theo thời gian thực"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Band 62Hz -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_card"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginBottom="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1. Sub-Bass Sâu (62 Hz)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvFreq62Val"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+5.5 dB"
+                        android:textColor="@color/accent_cyan"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <SeekBar
+                    android:id="@+id/sbFreq62"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="240"
+                    android:progress="175"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Band 85Hz -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_card"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginBottom="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2. Trống Kick Lực (85 Hz)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvFreq85Val"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+6.2 dB"
+                        android:textColor="@color/accent_cyan"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <SeekBar
+                    android:id="@+id/sbFreq85"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="240"
+                    android:progress="182"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Band 125Hz -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_card"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginBottom="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="3. Mid-Bass Đầy Đặn (125 Hz)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvFreq125Val"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+3.2 dB"
+                        android:textColor="@color/accent_cyan"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <SeekBar
+                    android:id="@+id/sbFreq125"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="240"
+                    android:progress="152"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Band 165Hz -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_card"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginBottom="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="4. Cắt Ù Rền Thùng 5L (165 Hz)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvFreq165Val"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-3.5 dB"
+                        android:textColor="@color/accent_orange"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <SeekBar
+                    android:id="@+id/sbFreq165"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="240"
+                    android:progress="85"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Band 500Hz -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_card"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginBottom="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="5. Độ Trong Giọng Hát (500 Hz)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvFreq500Val"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+2.2 dB"
+                        android:textColor="@color/accent_cyan"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <SeekBar
+                    android:id="@+id/sbFreq500"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="240"
+                    android:progress="142"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Band 1000Hz -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_card"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginBottom="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="6. Giọng Ca Chính (1.0 kHz)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvFreq1kVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+3.5 dB"
+                        android:textColor="@color/accent_cyan"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <SeekBar
+                    android:id="@+id/sbFreq1k"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="240"
+                    android:progress="155"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Band 2500Hz -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_card"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginBottom="6dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="7. Vocal Nữ &amp; Kèn (2.5 kHz)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvFreq2_5kVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+3.8 dB"
+                        android:textColor="@color/accent_cyan"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <SeekBar
+                    android:id="@+id/sbFreq2_5k"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="240"
+                    android:progress="158"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Band 8000Hz -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_card"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="8. Tép Dome Leng Keng (8.0 kHz)"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvFreq8kVal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+5.0 dB"
+                        android:textColor="@color/accent_gold"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <SeekBar
+                    android:id="@+id/sbFreq8k"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="240"
+                    android:progress="170"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- BUTTON OPEN WEB STUDIO -->
+            <Button
+                android:id="@+id/btnOpenWebStudio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🌐 MỞ STUDIO PEQ &amp; RTA ĐO MICRO TRÊN ĐIỆN THOẠI"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:backgroundTint="@color/accent_blue"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp" />
+        </LinearLayout>
+
+        <!-- PROGRESS BAR -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:visibility="gone"
+            android:max="42"
+            android:progress="0"
+            android:layout_marginBottom="8dp" />
+
+        <!-- LOG VIEWER -->
+        <TextView
+            android:id="@+id/tvLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sẵn sàng! Bấm 'KẾT NỐI BLUETOOTH' để chỉnh không dây hoặc 'CÁP USB OTG'."
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:background="@color/bg_card"
+            android:padding="10dp" />
+
+    </LinearLayout>
+        </ScrollView>
+
+        <!-- FULL-SCREEN GRAPHIC STUDIO WEBVIEW -->
+        <WebView
+            android:id="@+id/webViewStudio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:background="#121417" />
+
+    </FrameLayout>
+</LinearLayout>
+

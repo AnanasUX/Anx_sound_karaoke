@@ -1,0 +1,12 @@
+{
+  "title": "Best Sound DSP Controller",
+  "description": "Điều khiển PEQ, phân tích RTA và mô phỏng quy trình hiệu chỉnh AI cho MVSilicon BP1048B2.",
+  "language": "vi",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

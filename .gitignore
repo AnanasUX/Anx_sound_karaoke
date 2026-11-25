@@ -1,0 +1,22 @@
+# Gradle & Android build artifacts
+android_app/.gradle/
+android_app/build/
+android_app/app/build/
+android_app/local.properties
+*.iml
+.idea/
+
+# Python & Scratch
+__pycache__/
+*.pyc
+scratch/
+
+# Large binaries & legacy APKs
+*.exe
+MVSilicon_DSP_Tuner_*.apk
+BestSound_*.apk
+Ansound_*.apk
+Audio_And/*.exe
+Audio_And/MVSilicon_DSP_Tuner_*.apk
+Audio_And/BestSound_*.apk
+Audio_And/Ansound_*.apk

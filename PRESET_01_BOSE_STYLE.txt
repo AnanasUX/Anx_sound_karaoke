@@ -1,0 +1,80 @@
+================================================================================
+           CẤU HÌNH KIỂM THỬ DSP CHO HỆ THỐNG LOA 3 ĐƯỜNG TIẾNG (MONO)
+                  PRESET 01: BOSE STYLE (DEEP BASS / WARM VOCAL)
+================================================================================
+Phần cứng:
+- Thùng: 5 Lít net (đã bẻ co 90 độ nối dài ống hơi ~22-25cm, tuning ~65Hz)
+- CH1: Củ Mid-bass Boombox 4 (4 Ohm / 40W RMS)
+- CH2: Củ Mid AIRS 3 inch (4 Ohm / 15W RMS, khoang kín riêng ~0.4L)
+- CH3: Củ Treble Dome (4 Ohm / 20W RMS)
+================================================================================
+
+--------------------------------------------------------------------------------
+1. CẤU HÌNH ROUTING & PHÂN TẦN (CROSSOVER)
+--------------------------------------------------------------------------------
+Kênh         | HPF Freq | HPF Slope | LPF Freq  | LPF Slope | Gain    | Phase | Delay
+-------------+----------+-----------+-----------+-----------+---------+-------+-------
+CH1 (Bass)   | 55 Hz    | LR24      | 350 Hz    | LR24      |  0.0 dB |   0°  | 0.0 ms
+CH2 (AIRS)   | 350 Hz   | LR24      | 4.000 Hz  | LR24      | -2.0 dB |   0°  | 0.0 ms
+CH3 (Treble) | 4.000 Hz | LR24      | Bypassed  | ---       | -6.0 dB |   0°  | 0.0 ms
+
+* Ghi chú: LR24 = Linkwitz-Riley bậc 4 (độ dốc 24 dB/Octave).
+
+--------------------------------------------------------------------------------
+2. CÂN CHỈNH EQUALIZER (PARAMETRIC EQ - PEQ)
+--------------------------------------------------------------------------------
+
+[CH1 - CỦ MID-BASS BOOMBOX 4]
+Band  | Type    | Frequency | Gain    | Q Factor | Mục đích
+------+---------+-----------+---------+----------+------------------------------
+PEQ 1 | Peaking | 75 Hz     | +1.0 dB | 0.8      | Tăng độ đầm, lực nảy nốt trầm
+PEQ 2 | Peaking | 100 Hz    | +1.0 dB | 1.0      | Tăng độ tròn tiếng của trống kick
+PEQ 3 | Peaking | 160 Hz    | -1.0 dB | 1.0      | Giảm độ ù rền thùng nhỏ
+PEQ 4 | Peaking | 250 Hz    | -1.0 dB | 1.0      | Làm sạch dải tiếp giáp với củ Mid
+
+[CH2 - CỦ TOÀN DẢI / MID AIRS 3 INCH]
+Band  | Type    | Frequency | Gain    | Q Factor | Mục đích
+------+---------+-----------+---------+----------+------------------------------
+PEQ 1 | Peaking | 400 Hz    | -1.0 dB | 1.0      | Cắt bớt phần đục của dải low-mid
+PEQ 2 | Peaking | 700 Hz    | -1.0 dB | 1.0      | Giảm độ mũi (nasal voice)
+PEQ 3 | Peaking | 1.200 Hz  | +1.0 dB | 0.8      | Làm rõ độ dày của vocal nam
+PEQ 4 | Peaking | 2.000 Hz  | +1.0 dB | 0.8      | Giúp vocal nổi rõ phía trước
+PEQ 5 | Peaking | 3.000 Hz  | +0.5 dB | 1.0      | Làm sáng và ngọt lời ca sĩ
+
+[CH3 - CỦ TREBLE DOME]
+Band  | Type    | Frequency | Gain    | Q Factor | Mục đích
+------+---------+-----------+---------+----------+------------------------------
+PEQ 1 | Peaking | 5.000 Hz  | -1.0 dB | 1.0      | Giảm độ chói gắt tai
+PEQ 2 | Peaking | 8.000 Hz  | +1.0 dB | 0.8      | Tăng độ sắc nét tiếng hi-hat
+PEQ 3 | Peaking | 12.000 Hz | +1.0 dB | 0.8      | Tạo độ tơi xốp, bay bổng
+PEQ 4 | HighShv | 16.000 Hz | +0.5 dB | 0.8      | Mở rộng không gian âm cao (Air)
+
+--------------------------------------------------------------------------------
+3. THIẾT LẬP BẢO VỆ CỦ LOA (LIMITER / DRC)
+--------------------------------------------------------------------------------
+Thông số cài đặt tham chiếu theo ampli nguồn 5S (21V max, clipping ~14V RMS):
+
+Kênh         | Ngưỡng V_RMS | Ngưỡng dBFS | Attack Time | Release Time | Ratio
+-------------+--------------+-------------+-------------+--------------+-------
+CH1 (Bass)   | 12.65 V      | -1.0 dBFS   | 10 ms       | 150 ms       | ∞:1
+CH2 (AIRS)   |  7.75 V      | -5.0 dBFS   |  5 ms       |  80 ms       | ∞:1
+CH3 (Treble) |  8.94 V      | -4.0 dBFS   |  3 ms       |  50 ms       | ∞:1
+
+--------------------------------------------------------------------------------
+4. QUY TRÌNH KIỂM THỬ THỰC TẾ (TEST SEQUENCE)
+--------------------------------------------------------------------------------
+Bước 1: Mute CH2, CH3 -> Chỉ phát CH1 (Bass):
+  - Mở bài có dải bass dày (như Billie Eilish - Bad Guy hoặc Hotel California).
+  - Kiểm tra xem tiếng bass có gọn, chắc và không bị rè hay phát ra tiếng xì gió ở ống hơi không.
+
+Bước 2: Mute CH1, CH3 -> Chỉ phát CH2 (Mid AIRS):
+  - Mở bài hát có giọng vocal mộc (Acoustic / Như Quỳnh / Bằng Kiều).
+  - Kiểm tra xem tiếng mid có rõ, ấm và ngọt ngào không.
+
+Bước 3: Mute CH1, CH2 -> Chỉ phát CH3 (Treble):
+  - Mở dải cao kiểm tra tiếng leng keng có tơi mịn, không bị rít hay xé tiếng.
+
+Bước 4: Mở đồng thời cả 3 kênh:
+  - Nếu thấy giọng hát hoặc tiếng trống bị mỏng ở vùng chuyển giao (350Hz hoặc 4kHz):
+    Thử đảo pha (Invert Phase 180°) riêng kênh CH2 (Mid). Nếu đảo pha nghe dầy tiếng hơn nghĩa là bị ngược pha âm học do vị trí lắp củ loa.
+================================================================================
