@@ -51,11 +51,11 @@ public class NativeKaraokeEngine {
     private volatile float echoFeedback = 0.25f;    // 0.0 - 0.75
     private volatile float reverbMix = 0.15f;       // 0.0 - 1.0
     private volatile float reverbDecay = 0.68f;     // 0.3 - 0.90
-    private volatile float bassDb = 1.5f;           // -9.0 - +9.0 dB (180Hz)
-    private volatile float midDb = 1.5f;            // -9.0 - +9.0 dB (1.2kHz)
-    private volatile float trebleDb = 2.0f;         // -9.0 - +9.0 dB (5kHz)
-    private volatile float stereoChorus = 0.20f;    // 0.0 - 1.0 (3D Stereo Doubler)
-    private volatile float nearFieldLevel = 0.55f;  // 0.0 - 1.0 (Higher default rejects speaker loopback echo)
+    private volatile float bassDb = 1.0f;           // -9.0 - +9.0 dB (180Hz)
+    private volatile float midDb = 1.0f;            // -9.0 - +9.0 dB (1.2kHz)
+    private volatile float trebleDb = 1.5f;         // -9.0 - +9.0 dB (5kHz)
+    private volatile float stereoChorus = 0.0f;     // 0.0 - 1.0 (Off by default for pure vocal clarity)
+    private volatile float nearFieldLevel = 0.20f;  // 0.0 - 1.0 (Gentle gate so words are never chopped)
     private volatile boolean lowCutEnabled = true;
     private volatile boolean antiHowlEnabled = true;
     private volatile boolean hwAecEnabled = false;  // Off by default for StarMaker Direct Low-Latency FastCapture path
@@ -219,7 +219,7 @@ public class NativeKaraokeEngine {
         activeSampleRate = sampleRate;
 
         final int burstFrames = getOptimalFramesPerBuffer();
-        final int frameSamples = burstFrames;
+        final int frameSamples = Math.max(256, burstFrames * 2);
         final int recBufBytes = Math.max(minInBuf, frameSamples * 2 * 2);
         final int playBufBytes = Math.max(minOutBuf, frameSamples * 4 * 2);
 
@@ -291,11 +291,6 @@ public class NativeKaraokeEngine {
                 return false;
             }
             audioTrack.setVolume(1.0f);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                int cap = audioTrack.getBufferCapacityInFrames();
-                int target = Math.min(cap, Math.max(burstFrames * 2, 256));
-                audioTrack.setBufferSizeInFrames(target);
-            }
 
             isRunning = true;
             final int finalSampleRate = sampleRate;
@@ -603,8 +598,8 @@ public class NativeKaraokeEngine {
                     if (chorusIdx >= chorusBuf.length) chorusIdx = 0;
 
                     float baseFx = delayed * curEchoMix + apSig * curRevMix;
-                    float mixedL = voice * curDry + baseFx + doubled * (curChorus * 0.28f);
-                    float mixedR = voice * curDry + baseFx - doubled * (curChorus * 0.28f);
+                    float mixedL = voice * curDry + baseFx + doubled * (curChorus * 0.22f);
+                    float mixedR = voice * curDry + baseFx + doubled * (curChorus * 0.14f);
 
                     // Soft-limiter L/R
                     mixedL = softLimit(mixedL);

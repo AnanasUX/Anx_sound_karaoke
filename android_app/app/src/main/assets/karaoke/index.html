@@ -872,9 +872,9 @@
       <div class="slider-item">
         <div class="slider-label-row">
           <span>Hát Bè Đôi 3D (Stereo Chorus)</span>
-          <strong id="valStereoChorus">20%</strong>
+          <strong id="valStereoChorus">0%</strong>
         </div>
-        <input type="range" class="modern-slider gold" id="sliderStereoChorus" min="0" max="100" value="20" step="5">
+        <input type="range" class="modern-slider gold" id="sliderStereoChorus" min="0" max="100" value="0" step="5">
       </div>
     </div>
 
@@ -932,9 +932,9 @@
       <div class="slider-item" style="margin-bottom: 12px;">
         <div class="slider-label-row">
           <span>Chống Ồn Xa / Bắt Mic Gần</span>
-          <strong id="valNearField">55% (Chỉ bắt gần)</strong>
+          <strong id="valNearField">20%</strong>
         </div>
-        <input type="range" class="modern-slider" id="sliderNearField" min="0" max="100" value="55" step="5">
+        <input type="range" class="modern-slider" id="sliderNearField" min="0" max="100" value="20" step="5">
       </div>
 
       <label class="switch-row">
@@ -1111,12 +1111,12 @@
 
         this.params = {
           micGain: 1.15,
-          tone: 2.0,
-          bassDb: 1.5,
-          midDb: 1.5,
-          trebleDb: 2.0,
-          stereoChorus: 0.20,
-          nearField: 0.55,
+          tone: 1.5,
+          bassDb: 1.0,
+          midDb: 1.0,
+          trebleDb: 1.5,
+          stereoChorus: 0.0,
+          nearField: 0.20,
           echoMix: 0.15,
           echoDelay: 0.18,
           echoFeedback: 0.25,
