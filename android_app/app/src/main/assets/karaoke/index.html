@@ -751,7 +751,7 @@
 
       <div class="meter-box">
         <div class="meter-top">
-          <span>MỨC TÍN HIỆU GIỌNG</span>
+          <span>MỨC GIỌNG · <b id="txtLatencyMs" style="color:#00e676;">-- ms</b></span>
           <strong id="txtVocalDb">-inf dB</strong>
         </div>
         <div class="vu-track">
@@ -920,45 +920,61 @@
       </div>
     </div>
 
-    <!-- LỌC ỒN & CHỐNG VỌNG -->
+    <!-- LỌC ỒN, ĐỊNH TUYẾN & CHỐNG HÚ -->
     <div class="glass-card">
       <div class="card-header">
         <div class="card-title-group">
-          <h3>🛡️ Lọc Tạp Âm &amp; Chống Vọng</h3>
+          <h3>🛡️ Định Tuyến &amp; Chống Hú DSP</h3>
         </div>
-        <span class="card-badge">SHIELD</span>
+        <span class="card-badge">4-LAYER DSP</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div>
+          <label style="display:block;font-size:10.5px;color:var(--muted);margin-bottom:4px;">Nguồn Thu (Input)</label>
+          <select id="selAudioInput" style="width:100%;padding:9px;border-radius:10px;border:1px solid var(--border);background:#0c1018;color:#fff;font-size:12px;">
+            <option value="BUILTIN" selected>Mic Điện Thoại (Ép)</option>
+            <option value="AUTO">Tự Động (OS)</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:10.5px;color:var(--muted);margin-bottom:4px;">Ngõ Phát (Output)</label>
+          <select id="selAudioOutput" style="width:100%;padding:9px;border-radius:10px;border:1px solid var(--border);background:#0c1018;color:#fff;font-size:12px;">
+            <option value="AUTO" selected>Tự Động (A2DP/AUX)</option>
+            <option value="BLUETOOTH">Loa Bluetooth A2DP</option>
+            <option value="AUX">Dây AUX 3.5mm</option>
+            <option value="SPEAKER">Loa Điện Thoại</option>
+          </select>
+        </div>
       </div>
 
       <div class="slider-item" style="margin-bottom: 12px;">
         <div class="slider-label-row">
-          <span>Chống Ồn Xa / Bắt Mic Gần</span>
-          <strong id="valNearField">20%</strong>
+          <span>Ngưỡng Noise Gate (Cắt im lặng)</span>
+          <strong id="valNearField">-40 dBFS</strong>
         </div>
-        <input type="range" class="modern-slider" id="sliderNearField" min="0" max="100" value="20" step="5">
+        <input type="range" class="modern-slider" id="sliderNearField" min="-55" max="-20" value="-40" step="1">
       </div>
 
       <label class="switch-row">
         <div class="switch-text">
-          <strong>Khử vọng loa ngoài (AEC)</strong>
-          <small>Tắt để giảm trễ tối đa như StarMaker; bật nếu loa ngoài bị vọng</small>
+          <strong>Chống hú Frequency Shifter (+4 Hz)</strong>
+          <small>Dịch phổ ±4Hz &amp; Notch 2.4kHz triệt tiêu hồi tiếp</small>
         </div>
-        <span class="toggle-switch"><input type="checkbox" id="chkHwAec"><span class="toggle-track"></span></span>
+        <span class="toggle-switch"><input type="checkbox" id="chkAntiHowl" checked><span class="toggle-track"></span></span>
       </label>
 
       <label class="switch-row">
         <div class="switch-text">
-          <strong>Cắt ù trầm &amp; tiếng gió (Low-Cut 100Hz)</strong>
-          <small>Giúp giọng gọn sạch, không ù nền</small>
+          <strong>Cắt trầm LR24 (HPF 90Hz)</strong>
+          <small>Loại bỏ ù nền, gió và giảm tải cho loa Sub</small>
         </div>
         <span class="toggle-switch"><input type="checkbox" id="chkLowCut" checked><span class="toggle-track"></span></span>
       </label>
 
-      <label class="switch-row">
-        <div class="switch-text">
-          <strong>Chống hú rít tự động (Notch 2.4kHz)</strong>
-          <small>Ngăn tiếng rít chói tai khi để gần loa</small>
-        </div>
-        <span class="toggle-switch"><input type="checkbox" id="chkAntiHowl" checked><span class="toggle-track"></span></span>
+      <label class="switch-row" style="display:none;">
+        <div class="switch-text"><strong>Hardware AEC</strong></div>
+        <span class="toggle-switch"><input type="checkbox" id="chkHwAec"><span class="toggle-track"></span></span>
       </label>
     </div>
   </section>
@@ -1614,14 +1630,22 @@
       });
 
       bindSlider('sliderNearField', 'valNearField', (v, lbl) => {
-        engine.params.nearField = v / 100;
-        engine.syncNativeParams();
-        let txt = v + '%';
-        if (v >= 70) txt += ' (Cực gần 5cm)';
-        else if (v >= 40) txt += ' (Chỉ bắt gần)';
-        else if (v === 0) txt += ' (Thu tất cả)';
-        if (lbl) lbl.innerText = txt;
+        engine.params.gateDb = v;
+        if (lbl) lbl.innerText = v + ' dBFS';
+        if (window.AndroidDsp && typeof window.AndroidDsp.setGateThresholdDb === 'function') {
+          window.AndroidDsp.setGateThresholdDb(v);
+        }
       });
+
+      const updateRoute = () => {
+        const inp = document.getElementById('selAudioInput')?.value || 'BUILTIN';
+        const out = document.getElementById('selAudioOutput')?.value || 'AUTO';
+        if (window.AndroidDsp && typeof window.AndroidDsp.setAudioRoute === 'function') {
+          window.AndroidDsp.setAudioRoute(out, inp === 'BUILTIN');
+        }
+      };
+      document.getElementById('selAudioInput')?.addEventListener('change', updateRoute);
+      document.getElementById('selAudioOutput')?.addEventListener('change', updateRoute);
 
       bindSlider('sliderBeatVolume', 'valBeatVolume', (v, lbl) => {
         engine.params.beatVolume = v / 100;
@@ -1740,7 +1764,7 @@
       }
 
       let nativePeakHold = 0;
-      window.onNativeVocalMeter = function(db) {
+      window.onNativeVocalMeter = function(db, latencyMs) {
         if (!engine.isActive) return;
         const pct = Math.max(0, Math.min(100, ((db + 40) / 40) * 100));
         document.getElementById('vuMeterFill').style.width = pct.toFixed(1) + '%';
@@ -1748,6 +1772,10 @@
         else nativePeakHold = Math.max(0, nativePeakHold - 2.5);
         document.getElementById('vuMeterPeak').style.left = nativePeakHold.toFixed(1) + '%';
         document.getElementById('txtVocalDb').innerText = db > -75 ? (db.toFixed(1) + ' dB') : '-inf dB';
+        if (typeof latencyMs === 'number' && latencyMs > 0) {
+          const latEl = document.getElementById('txtLatencyMs');
+          if (latEl) latEl.innerText = 'Latency ~' + latencyMs.toFixed(0) + ' ms';
+        }
         drawSpectrum(pct);
 
         if (engine.isDucking && engine.musicGain && engine.ctx) {

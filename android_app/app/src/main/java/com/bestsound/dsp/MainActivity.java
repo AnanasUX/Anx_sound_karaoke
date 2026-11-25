@@ -87,10 +87,11 @@ public class MainActivity extends Activity implements UsbDspManager.DspCallback,
         bluetoothDspManager.setCallback(this);
 
         nativeKaraokeEngine = KaraokeForegroundService.getEngine(this);
-        nativeKaraokeEngine.setMeterCallback(db -> runOnUiThread(() -> {
+        nativeKaraokeEngine.setMeterCallback((db, latencyMs) -> runOnUiThread(() -> {
             if (webViewStudio != null) {
                 String dbStr = String.format(Locale.US, "%.1f", db);
-                webViewStudio.evaluateJavascript("if (typeof onNativeVocalMeter === 'function') { onNativeVocalMeter(" + dbStr + "); }", null);
+                String latStr = String.format(Locale.US, "%.1f", latencyMs);
+                webViewStudio.evaluateJavascript("if (typeof onNativeVocalMeter === 'function') { onNativeVocalMeter(" + dbStr + ", " + latStr + "); }", null);
             }
         }));
         KaraokeForegroundService.setStateListener(() -> runOnUiThread(() -> {
@@ -327,6 +328,19 @@ public class MainActivity extends Activity implements UsbDspManager.DspCallback,
             eng.setMidDb(midDb);
             eng.setTrebleDb(trebleDb);
             eng.setStereoChorus(stereoChorus);
+        }
+
+        @JavascriptInterface
+        public void setAudioRoute(String outputRoute, boolean forceBuiltInMic) {
+            NativeKaraokeEngine eng = KaraokeForegroundService.getEngine(MainActivity.this);
+            eng.setPreferredOutputRoute(outputRoute);
+            eng.setForceBuiltInMic(forceBuiltInMic);
+        }
+
+        @JavascriptInterface
+        public void setGateThresholdDb(float db) {
+            NativeKaraokeEngine eng = KaraokeForegroundService.getEngine(MainActivity.this);
+            eng.setGateThresholdDb(db);
         }
 
         @JavascriptInterface
